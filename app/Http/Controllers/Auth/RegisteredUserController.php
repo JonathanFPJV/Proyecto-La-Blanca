@@ -31,20 +31,43 @@ class RegisteredUserController extends Controller
     {
         $request->validate([
             'name' => ['required', 'string', 'max:255'],
-            'email' => ['required', 'string', 'lowercase', 'email', 'max:255', 'unique:'.User::class],
+            'apellido' => ['required', 'string', 'max:255'],
+            'nombreusuario' => ['required', 'string', 'max:255', 'unique:' . User::class],
+            'direccion' => ['required', 'string', 'max:255'],
+            'telefono' => ['required', 'string', 'max:15'],
+            'email' => ['required', 'string', 'lowercase', 'email', 'max:255', 'unique:' . User::class],
             'password' => ['required', 'confirmed', Rules\Password::defaults()],
         ]);
 
+        $userType = 3; // Por defecto 'Cliente'
+        
+        // Si el registro es realizado por un Administrador
+        if (Auth::check() && Auth::user()->ID_Tipo == 1) {
+            $request->validate([
+                'ID_Tipo' => ['required', 'integer', 'in:1,2,3'],
+            ]);
+            $userType = $request->ID_Tipo;
+        } elseif (isset($request->google_id)) {
+            // Si el registro es con su cuenta google
+            $userType = 3; // Tipo cliente asignado por google
+        }
+
         $user = User::create([
             'name' => $request->name,
+            'apellido' => $request->apellido,
+            'nombreusuario' => $request->nombreusuario,
+            'direccion' => $request->direccion,
+            'telefono' => $request->telefono,
             'email' => $request->email,
             'password' => Hash::make($request->password),
+            'ID_Tipo' => $userType,
+            'estado' => 'activo', // colocamos el estado de activo
         ]);
 
         event(new Registered($user));
 
         Auth::login($user);
 
-        return redirect(route('dashboard', absolute: false));
+        return redirect(route('dashboard'));
     }
 }

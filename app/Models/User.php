@@ -28,7 +28,8 @@ class User extends Authenticatable
         'token',
         'telefono',
         'estado',
-        'ID_Tipo'
+        'ID_Tipo',
+        'google_id'
     ];
 
     /**

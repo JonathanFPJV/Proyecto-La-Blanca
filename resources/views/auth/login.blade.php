@@ -41,7 +41,20 @@
 
             <x-primary-button class="ms-3">
                 {{ __('Log in') }}
-            </x-primary-button>
+            </x-primary-button>      
         </div>
     </form>
+    <div class="flex items-center justify-end mt-4">
+        <x-primary-button class="ms-3" >
+            <a href="{{ route('register') }}" class="text-white no-underline">
+            {{ __('Registrarse') }}
+        </x-primary-button>
+    </div>
+    <!-- Botón de Registro con Google -->
+    <div class="flex items-center justify-center mt-4">
+            <x-primary-button class="flex items-center space-x-2">
+                <img src="https://th.bing.com/th/id/R.70d3828eb9c953441e50f122d616c91e?rik=8seAHZVho%2bGlIg&pid=ImgRaw&r=0" alt="Google" class="w-5 h-5" />
+                <span>{{ __('Iniciar secion con google') }}</span>
+            </x-primary-button>
+        </div>
 </x-guest-layout>
