@@ -27,7 +27,11 @@
             @guest
                 <a href="{{ route('login') }}" class="text-white bg-red-600 px-3 py-2 rounded-full">Iniciar Sesión</a>
             @else
-                <span class="text-white">Bienvenido, {{ Auth::user()->nombreusuario }}</span>
+                @if (Auth::user()->google_id)
+                    <span class="text-white">Bienvenido, {{ Auth::user()->name }}</span>
+                @else
+                    <span class="text-white">Bienvenido, {{ Auth::user()->name }} {{ Auth::user()->apellido }}</span>
+                @endif
                 <form method="POST" action="{{ route('logout') }}">
                     @csrf
                     <button type="submit" class="text-white bg-red-600 px-3 py-2 rounded-full">Cerrar Sesión</button>
@@ -39,5 +43,6 @@
                 </svg>
             </a>
         </div>
+
     </div>
 </nav>

@@ -47,9 +47,6 @@ class RegisteredUserController extends Controller
                 'ID_Tipo' => ['required', 'integer', 'in:1,2,3'],
             ]);
             $userType = $request->ID_Tipo;
-        } elseif (isset($request->google_id)) {
-            // Si el registro es con su cuenta google
-            $userType = 3; // Tipo cliente asignado por google
         }
 
         $user = User::create([

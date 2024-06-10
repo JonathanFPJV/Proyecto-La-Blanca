@@ -3,11 +3,20 @@
 use App\Http\Controllers\ProfileController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\PayPalController;
-
+use Laravel\Socialite\Facades\Socialite;
+use App\Http\Controllers\Auth\GoogleController;
+use App\Models\User;
+use Illuminate\Support\Facades\Auth;
 
 Route::get('/', function () {
     return view('welcome');
 });
+
+Route::get('/google-auth/redirect', function () {
+    return Socialite::driver('google')->redirect();
+});
+ 
+Route::get('/google-auth/callback', [GoogleController::class, 'handleGoogleCallback']);
 
 Route::get('/dashboard', function () {
     return view('dashboard');
