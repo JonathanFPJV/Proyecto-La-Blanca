@@ -20,6 +20,15 @@ class User extends Authenticatable
         'name',
         'email',
         'password',
+        'apellido',
+        'nombreusuario',
+        'direccion',
+        'avatar',
+        'avatar_original',
+        'token',
+        'telefono',
+        'estado',
+        'ID_Tipo'
     ];
 
     /**
@@ -44,4 +53,25 @@ class User extends Authenticatable
             'password' => 'hashed',
         ];
     }
+
+    public function tipoUsuario()
+    {
+        return $this->belongsTo(TipoUsuario::class, 'ID_Tipo');
+    }
+
+    public function cuentaBancaria()
+    {
+        return $this->hasMany(CuentaBancaria::class, 'ID_Usuario');
+    }
+
+    public function comentarios()
+    {
+        return $this->hasMany(Comentario::class, 'ID_Usuario');
+    }
+
+    public function logistica()
+    {
+        return $this->hasMany(Logistica::class, 'Id_usuario');
+    }
+
 }
