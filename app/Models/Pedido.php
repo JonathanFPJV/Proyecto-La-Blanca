@@ -9,9 +9,7 @@ class Pedido extends Model
 {
     use HasFactory;
 
-    protected $primaryKey = 'n_pedido';
-    public $incrementing = false; // Indica que la clave primaria no es auto-incremental
-    protected $keyType = 'string'; // Indica que la clave primaria es de tipo string
+    protected $primaryKey = 'id';
 
     protected $fillable = [
         'n_pedido', 'Estado', 'Fecha_pedido', 'Monto_total', 'metodo_pago'

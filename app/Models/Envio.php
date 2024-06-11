@@ -9,9 +9,7 @@ class Envio extends Model
 {
     use HasFactory;
 
-    protected $primaryKey = 'n_envio';
-    public $incrementing = false; // Indica que la clave primaria no es auto-incremental
-    protected $keyType = 'string'; // Indica que la clave primaria es de tipo string
+    protected $primaryKey = 'id';
 
     protected $fillable = [
         'n_envio', 'Monto', 'Fecha_ENTREGA', 'Direccion_entrega', 'Estado'
