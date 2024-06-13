@@ -18,11 +18,11 @@ return new class extends Migration
             $table->foreign('Id_Almacen')->references('Id_Almacen')->on('almacenes');
             $table->foreignId('Id_Producto');
             $table->foreign('Id_Producto')->references('Id_Producto')->on('productos');
-            $table->string('n_orden', 50);
+            $table->string('n_orden', 50)->nullable();
             $table->foreign('n_orden')->references('id_orden')->on('compras')->onDelete('cascade');
-            $table->integer('stock');
+            $table->integer('stock')->nullable();
             $table->date('Fecha');
-            $table->integer('Cantidad');
+            $table->integer('Cantidad')->nullable();
             $table->timestamps();
         });
     }

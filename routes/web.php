@@ -8,6 +8,8 @@ use App\Http\Controllers\Auth\GoogleController;
 use App\Models\User;
 use Illuminate\Support\Facades\Auth;
 use App\Http\Controllers\AlmacenController;
+use App\Http\Controllers\LogisticaController;
+use App\Http\Controllers\ProductosController;
 
 Route::get('/', function () {
     return view('welcome');
@@ -31,6 +33,8 @@ Route::middleware('auth')->group(function () {
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
     Route::resource('almacenes', AlmacenController::class);
+    Route::resource('productos', ProductosController::class);
+    Route::resource('logistica', LogisticaController::class);
 });
 
 Route::prefix('paypal')->group(function () {
