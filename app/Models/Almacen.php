@@ -10,6 +10,8 @@ class Almacen extends Model
     use HasFactory;
 
     protected $primaryKey = 'Id_Almacen';
+    // Especificamos el nombre de la tabla
+    protected $table = 'almacenes';
 
     protected $fillable = [
         'Nombre_almacen',
