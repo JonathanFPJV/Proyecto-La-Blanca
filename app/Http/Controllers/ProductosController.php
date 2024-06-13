@@ -38,6 +38,11 @@ class ProductosController extends Controller
             'stock' => 'required|integer',
         ]);
 
+        // Verificar si el código del producto ya existe
+        if (Producto::where('Codigo_producto', $request->Codigo_producto)->exists()) {
+            return redirect()->back()->withErrors(['Codigo_producto' => 'El código del producto ya existe.'])->withInput();
+        }
+        
         if ($request->hasFile('imagen')) {
             $imagePath = $request->file('imagen')->store('productos', 'public');
         }
