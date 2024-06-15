@@ -1,81 +1,59 @@
-<x-guest-layout>
-    <form method="POST" action="{{ route('register') }}">
-        @csrf
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Crear una nueva cuenta</title>
+    <link href="{{ asset('css/styles_reg.css') }}" rel="stylesheet">
+</head>
+<body>
+    <div class="card">
+        <h2>Crear una nueva cuenta</h2>
+        <form method="POST" action="{{ route('register') }}" class="form-container">
+            @csrf
 
-        <!-- Name -->
-        <div>
-            <x-input-label for="name" :value="__('Name')" />
-            <x-text-input id="name" class="block mt-1 w-full" type="text" name="name" :value="old('name')" required autofocus autocomplete="name" />
-            <x-input-error :messages="$errors->get('name')" class="mt-2" />
-        </div>
+            <!-- Name and Last Name -->
+            <div class="input-group">
+                <input type="text" name="name" placeholder="Nombre" required>
+                <input type="text" name="apellido" placeholder="Apellido" required>
+            </div>
 
-        <!-- Apellido -->
-        <div class="mt-4">
-            <x-input-label for="apellido" :value="__('Apellido')" />
-            <x-text-input id="apellido" class="block mt-1 w-full" type="text" name="apellido" :value="old('apellido')" required />
-            <x-input-error :messages="$errors->get('apellido')" class="mt-2" />
-        </div>
+            <!-- User Name and Phone -->
+            <div class="input-group">
+                <input type="text" name="nombreusuario" placeholder="Nombre de Usuario" required>
+                <input type="text" name="telefono" placeholder="Teléfono" required>
+            </div>
 
-        <!-- Nombre de Usuario -->
-        <div class="mt-4">
-            <x-input-label for="nombreusuario" :value="__('Nombre de Usuario')" />
-            <x-text-input id="nombreusuario" class="block mt-1 w-full" type="text" name="nombreusuario" :value="old('nombreusuario')" required />
-            <x-input-error :messages="$errors->get('nombreusuario')" class="mt-2" />
-        </div>
+            <!-- Address -->
+            <div class="input-group single">
+                <input type="text" name="direccion" placeholder="Dirección" required>
+            </div>
 
-        <!-- Dirección -->
-        <div class="mt-4">
-            <x-input-label for="direccion" :value="__('Dirección')" />
-            <x-text-input id="direccion" class="block mt-1 w-full" type="text" name="direccion" :value="old('direccion')" required />
-            <x-input-error :messages="$errors->get('direccion')" class="mt-2" />
-        </div>
+            <!-- Email Address -->
+            <div class="input-group single">
+                <input type="email" name="email" placeholder="Correo electrónico" required>
+            </div>
 
-        <!-- Teléfono -->
-        <div class="mt-4">
-            <x-input-label for="telefono" :value="__('Teléfono')" />
-            <x-text-input id="telefono" class="block mt-1 w-full" type="text" name="telefono" :value="old('telefono')" required />
-            <x-input-error :messages="$errors->get('telefono')" class="mt-2" />
-        </div>
+            <!-- Password -->
+            <div class="input-group single">
+                <input type="password" name="password" placeholder="Contraseña" required>
+                <input type="password" name="password_confirmation" placeholder="Confirmar contraseña" required>
+            </div>
 
-        <!-- Email Address -->
-        <div class="mt-4">
-            <x-input-label for="email" :value="__('Email')" />
-            <x-text-input id="email" class="block mt-1 w-full" type="email" name="email" :value="old('email')" required autocomplete="username" />
-            <x-input-error :messages="$errors->get('email')" class="mt-2" />
-        </div>
+            <!-- Submit Button -->
+            <button type="submit" class="button">Crear cuenta</button>
 
-        <!-- Password -->
-        <div class="mt-4">
-            <x-input-label for="password" :value="__('Password')" />
-            <x-text-input id="password" class="block mt-1 w-full" type="password" name="password" required autocomplete="new-password" />
-            <x-input-error :messages="$errors->get('password')" class="mt-2" />
-        </div>
+            <!-- Already registered -->
+            <p class="already-registered">
+                 <a href="{{ route('login') }}">¿Ya registrado?</a>
+            </p>
 
-        <!-- Confirm Password -->
-        <div class="mt-4">
-            <x-input-label for="password_confirmation" :value="__('Confirm Password')" />
-            <x-text-input id="password_confirmation" class="block mt-1 w-full" type="password" name="password_confirmation" required autocomplete="new-password" />
-            <x-input-error :messages="$errors->get('password_confirmation')" class="mt-2" />
-        </div>
-
-        <div class="flex items-center justify-end mt-4">
-            <a class="underline text-sm text-gray-600 hover:text-gray-900 rounded-md focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500" href="{{ route('login') }}">
-                {{ __('Already registered?') }}
+            <!-- Google Sign-In -->
+            <a href="/google-auth/redirect" class="button-google">
+                <img src="https://th.bing.com/th/id/R.70d3828eb9c953441e50f122d616c91e?rik=8seAHZVho%2bGlIg&pid=ImgRaw&r=0" alt="Google" class="icon-google" />Registrarse con Google
             </a>
-
-            <x-primary-button class="ml-4">
-                {{ __('Register') }}
-            </x-primary-button>
-        </div>
-    </form>
-    <!-- Botón de Registro con Google -->
-    <div class="flex items-center justify-center mt-4">
-        <a
-            href="/google-auth/redirect"
-            class="flex items-center space-x-2 px-4 py-2 bg-blue-500 text-white rounded-md hover:bg-blue-601 transition"
-        >
-            <img src="https://th.bing.com/th/id/R.70d3828eb9c953441e50f122d616c91e?rik=8seAHZVho%2bGlIg&pid=ImgRaw&r=0" alt="Google" class="w-5 h-5" />
-            <span>{{ __('Registrarse con Google') }}</span>
-        </a>
+        </form>
     </div>
-</x-guest-layout>
+</body>
+</html>
+
