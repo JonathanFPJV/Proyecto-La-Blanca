@@ -1,0 +1,110 @@
+/* General Body Style */
+body {
+    font-family: 'Arial', sans-serif;
+    background-color: #f4f4f4;
+    margin: 0;
+    height: 100vh; /* Full height */
+    display: flex;
+    align-items: center; /* Center vertically */
+    justify-content: center; /* Center horizontally */
+}
+
+/* Card Style */
+.card {
+    background: white;
+    border-radius: 30px;
+    box-shadow: 0 10px 50px rgba(0, 0, 0, 0.2);
+    width: 400px;
+    padding: 60px;
+}
+
+/* Header Style */
+.card h2 {
+    font-size: 24px;
+    color: #333;
+    margin-bottom: 50px; /* Aumenta este valor para más espacio */
+    text-align: center;
+}
+
+/* Link Style */
+.card p {
+    color: #000; /* Black color for text */
+    text-align: center; /* Centers the text */
+    margin: 10px 05; /* Adds space above and below */
+}
+
+.card a {
+    color: #000000;
+    text-decoration: none;
+}
+
+.card a:hover {
+    text-decoration: underline;
+}
+
+/* Input Fields Style */
+.input-group {
+    margin-bottom: 20px;
+}
+
+.input-group input {
+    width: 90%;
+    padding: 20px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+}
+
+/* Button Style */
+.button {
+    background-color: #ff6347; /* Tomato */
+    color: white;
+    border: none;
+    padding: 15px 20px;
+    text-align: center;
+    text-decoration: none;
+    display: block; /* Cambiado de inline-block a block para permitir el centrado automático */
+    font-size: 16px;
+    margin: 4px auto; /* Actualizado para centrar horizontalmente */
+    cursor: pointer;
+    border-radius: 40px;
+    width: 50%;
+}
+
+.button:hover {
+    background-color: #ff4500; /* OrangeRed */
+}
+
+/* Separator Style */
+.separator {
+    display: flex;
+    align-items: center;
+    text-align: center;
+    margin: 20px 10;
+}
+
+.separator::before,
+.separator::after {
+    content: '';
+    flex: 1;
+    border-bottom: 1px solid #ccc;
+}
+
+.separator:not(:empty)::before {
+    margin-right: .25em;
+}
+
+.separator:not(:empty)::after {
+    margin-left: .25em;
+}
+
+/* Google Button Style */
+.google-btn {
+    
+    color: white;
+    border-radius: 4px;
+    padding: 10px;
+    display: block;
+    text-align: center;
+    width: 100%;
+}
+
