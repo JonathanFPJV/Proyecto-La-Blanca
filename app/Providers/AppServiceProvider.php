@@ -24,8 +24,5 @@ class AppServiceProvider extends ServiceProvider
         Comentario::class => ComentarioPolicy::class,
     ];
 
-     public function boot(): void
-    {
-        $this->registerPolicies();
-    }
+    
 }
