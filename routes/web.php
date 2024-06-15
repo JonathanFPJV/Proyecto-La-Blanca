@@ -10,7 +10,6 @@ use Illuminate\Support\Facades\Auth;
 use App\Http\Controllers\AlmacenController;
 use App\Http\Controllers\LogisticaController;
 use App\Http\Controllers\ProductosController;
-use App\Http\Controllers\ComentariosController;
 
 Route::get('/', function () {
     return view('welcome');
@@ -25,9 +24,10 @@ Route::get('/google-auth/callback', [GoogleController::class, 'handleGoogleCallb
 Route::get('/dashboard', function () {
     return view('dashboard');
 })->middleware(['auth', 'verified'])->name('dashboard');
+
 Route::get('/la_blanca', function () {
     return view('la_blanca'); // Asegúrate de tener esta ruta definida también
-})->name('la_blanca');
+});
 
 Route::middleware('auth')->group(function () {
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
@@ -36,7 +36,6 @@ Route::middleware('auth')->group(function () {
     Route::resource('almacenes', AlmacenController::class);
     Route::resource('productos', ProductosController::class);
     Route::resource('logistica', LogisticaController::class);
-    Route::resource('comentarios', ComentariosController::class)->except(['index', 'show']);
 });
 
 Route::prefix('paypal')->group(function () {
