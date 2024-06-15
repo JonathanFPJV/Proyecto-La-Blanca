@@ -10,6 +10,7 @@ use Illuminate\Support\Facades\Auth;
 use App\Http\Controllers\AlmacenController;
 use App\Http\Controllers\LogisticaController;
 use App\Http\Controllers\ProductosController;
+use App\Http\Controllers\ComentariosController;
 
 Route::get('/', function () {
     return view('welcome');
@@ -35,6 +36,7 @@ Route::middleware('auth')->group(function () {
     Route::resource('almacenes', AlmacenController::class);
     Route::resource('productos', ProductosController::class);
     Route::resource('logistica', LogisticaController::class);
+    Route::resource('comentarios', ComentariosController::class)->except(['index', 'show']);
 });
 
 Route::prefix('paypal')->group(function () {
