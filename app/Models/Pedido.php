@@ -12,11 +12,16 @@ class Pedido extends Model
     protected $primaryKey = 'id';
 
     protected $fillable = [
-        'n_pedido', 'Estado', 'Fecha_pedido', 'Monto_total', 'metodo_pago'
+        'n_pedido', 'Estado', 'Fecha_pedido', 'Monto_total', 'metodo_pago', 'id_boleta'
     ];
 
     public function compras()
     {
         return $this->hasMany(Compra::class, 'id_pedido', 'n_pedido');
+    }
+
+    public function boleta()
+    {
+        return $this->belongsTo(Boleta::class, 'id_boleta');
     }
 }

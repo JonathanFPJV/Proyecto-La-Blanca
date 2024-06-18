@@ -62,6 +62,24 @@
                             <x-input-error :messages="$errors->get('imagen')" class="mt-2" />
                         </div>
 
+                        <div class="form-group">
+                            <label for="image_1">Imagen 1</label>
+                            <input type="file" name="image_1" class="form-control">
+                        </div>
+                        <div class="form-group">
+                            <label for="image_2">Imagen 2</label>
+                            <input type="file" name="image_2" class="form-control">
+                        </div>
+                        <div class="form-group">
+                            <label for="image_3">Imagen 3</label>
+                            <input type="file" name="image_3" class="form-control">
+                        </div>
+                        <div class="form-group">
+                            <label for="image_4">Imagen 4</label>
+                            <input type="file" name="image_4" class="form-control">
+                        </div>
+
+
                         <!-- Seleccionar Almacén -->
                         <div class="mt-4">
                             <x-input-label for="almacen_id" :value="__('Almacén')" />

@@ -16,10 +16,14 @@ class Producto extends Model
         'Nombre_producto',
         'Descripcion',
         'Precio',
-        'Categoria',
+        'id_categoria',
         'Talla',
         'Color',
         'imagen',
+        'image_1',
+        'image_2',
+        'image_3',
+        'image_4',
         'precio_descuento',
         'descuento'
     ];
@@ -32,5 +36,10 @@ class Producto extends Model
     public function logistica()
     {
         return $this->hasMany(Logistica::class, 'Id_Producto');
+    }
+
+    public function categoria()
+    {
+        return $this->belongsTo(Categoria::class, 'id_categoria');
     }
 }
