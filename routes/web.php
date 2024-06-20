@@ -28,7 +28,15 @@ Route::get('/dashboard', function () {
 
 Route::get('/la_blanca', function () {
     return view('la_blanca');
-})->name('la_blanca'); // Asegúrate de tener esta ruta definida y con nombre
+})->name('la_blanca');
+
+Route::get('/la_blanca_admin', function () {
+    return view('la_blanca_admin');
+})->middleware(['auth'])->name('la_blanca_admin');
+
+Route::get('/la_blanca_work', function () {
+    return view('la_blanca_work');
+})->middleware(['auth'])->name('la_blanca_work');
 
 Route::middleware('auth')->group(function () {
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
@@ -52,4 +60,5 @@ Route::get('/paypal', function () {
 });
 
 require __DIR__.'/auth.php';
+
 

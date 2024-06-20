@@ -28,7 +28,15 @@ class AuthenticatedSessionController extends Controller
 
         $request->session()->regenerate();
 
-        return redirect()->intended(route('la_blanca', absolute: false));
+        $user = Auth::user();
+
+        if ($user->ID_Tipo == 1) {
+            return redirect()->route('la_blanca_admin');
+        } elseif ($user->ID_Tipo == 2) {
+            return redirect()->route('la_blanca_work');
+        } else {
+            return redirect()->route('la_blanca');
+        }
     }
 
     /**
@@ -45,3 +53,4 @@ class AuthenticatedSessionController extends Controller
         return redirect('/la_blanca');
     }
 }
+
