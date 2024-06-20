@@ -42,4 +42,9 @@ class Producto extends Model
     {
         return $this->belongsTo(Categoria::class, 'id_categoria');
     }
+
+    public function historialPrecios()
+    {
+        return $this->hasMany(HistorialPrecio::class, 'id_producto');
+    }
 }

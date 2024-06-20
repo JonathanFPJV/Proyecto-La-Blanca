@@ -38,10 +38,15 @@
                             <x-input-error :messages="$errors->get('Precio')" class="mt-2" />
                         </div>
 
+                        <!-- Seleccionar Categoría -->
                         <div>
-                            <x-input-label for="Categoria" :value="__('Categoría')" />
-                            <x-text-input id="Categoria" class="block mt-1 w-full" type="text" name="Categoria" required />
-                            <x-input-error :messages="$errors->get('Categoria')" class="mt-2" />
+                            <x-input-label for="id_categoria" :value="__('Categoría')" />
+                            <select id="id_categoria" name="id_categoria" class="block mt-1 w-full" required>
+                                @foreach($categorias as $categoria)
+                                    <option value="{{ $categoria->id }}">{{ $categoria->nombre_categoria }}</option>
+                                @endforeach
+                            </select>
+                            <x-input-error :messages="$errors->get('id_categoria')" class="mt-2" />
                         </div>
 
                         <div>

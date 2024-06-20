@@ -14,7 +14,8 @@ class ProductosController extends Controller
 {
     public function index()
     {
-        $productos = Producto::all();
+        
+        $productos = Producto::with(['logistica.almacen'])->get();
         return view('productos.index', compact('productos'));
     }
 
@@ -52,6 +53,7 @@ class ProductosController extends Controller
         $folder = 'productos/' . $request->Codigo_producto;
 
         $data = $request->all();
+
         if ($request->hasFile('imagen')) {
             $data['imagen'] = $request->file('imagen')->store($folder, 'public');
         }

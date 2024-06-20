@@ -35,8 +35,12 @@
                                         <td class="py-2 px-4 border-b border-gray-200">{{ $producto->Nombre_producto }}</td>
                                         <td class="py-2 px-4 border-b border-gray-200">{{ $producto->Precio }}</td>
                                         <td class="py-2 px-4 border-b border-gray-200">{{ $producto->Categoria }}</td>
-                                        <td class="py-2 px-4 border-b border-gray-200">{{ $producto->logistica->first()->stock }}</td>
-                                        <td class="py-2 px-4 border-b border-gray-200">{{ $producto->logistica->first()->almacen->Nombre_almacen }}</td>
+                                        <td class="py-2 px-4 border-b border-gray-200">
+                                            {{ $producto->logistica->isNotEmpty() ? $producto->logistica->first()->stock : 'N/A' }}
+                                        </td>
+                                        <td class="py-2 px-4 border-b border-gray-200">
+                                            {{ $producto->logistica->isNotEmpty() && $producto->logistica->first()->almacen ? $producto->logistica->first()->almacen->Nombre_almacen : 'N/A' }}
+                                        </td>
                                         <td class="py-2 px-4 border-b border-gray-200">
                                             <a href="{{ route('productos.show', $producto->Id_Producto) }}" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-1 px-2 rounded">Ver</a>
                                             <a href="{{ route('productos.edit', $producto->Id_Producto) }}" class="bg-yellow-500 hover:bg-yellow-700 text-white font-bold py-1 px-2 rounded">Editar</a>

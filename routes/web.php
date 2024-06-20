@@ -10,6 +10,7 @@ use Illuminate\Support\Facades\Auth;
 use App\Http\Controllers\AlmacenController;
 use App\Http\Controllers\LogisticaController;
 use App\Http\Controllers\ProductosController;
+use App\Http\Controllers\CategoriaController;
 
 Route::get('/', function () {
     return view('welcome');
@@ -18,7 +19,7 @@ Route::get('/', function () {
 Route::get('/google-auth/redirect', function () {
     return Socialite::driver('google')->redirect();
 });
- 
+
 Route::get('/google-auth/callback', [GoogleController::class, 'handleGoogleCallback']);
 
 Route::get('/dashboard', function () {
@@ -26,8 +27,8 @@ Route::get('/dashboard', function () {
 })->middleware(['auth', 'verified'])->name('dashboard');
 
 Route::get('/la_blanca', function () {
-    return view('la_blanca'); // Asegúrate de tener esta ruta definida también
-});
+    return view('la_blanca');
+})->name('la_blanca'); // Asegúrate de tener esta ruta definida y con nombre
 
 Route::middleware('auth')->group(function () {
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
@@ -36,6 +37,7 @@ Route::middleware('auth')->group(function () {
     Route::resource('almacenes', AlmacenController::class);
     Route::resource('productos', ProductosController::class);
     Route::resource('logistica', LogisticaController::class);
+    Route::resource('categorias', CategoriaController::class);
 });
 
 Route::prefix('paypal')->group(function () {
@@ -49,5 +51,5 @@ Route::get('/paypal', function () {
     return view('paypal');
 });
 
-
 require __DIR__.'/auth.php';
+
