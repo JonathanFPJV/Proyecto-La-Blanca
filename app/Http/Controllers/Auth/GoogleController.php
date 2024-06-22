@@ -30,6 +30,8 @@ class GoogleController extends Controller
                     'email' => $user->email,
                     'google_id' => $user->id,
                     'password' => Hash::make('my-google'), // Puedes cambiar esto a una cadena generada de forma segura
+                    'ID_Tipo' => 3,
+                    'estado' => 'activo',
                 ]);
 
                 Auth::login($newUser);
