@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreateBoletasTable extends Migration
+class ModifyMontoTotalNullableInPedidosTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,12 +13,8 @@ class CreateBoletasTable extends Migration
      */
     public function up()
     {
-        Schema::create('boletas', function (Blueprint $table) {
-            $table->id();
-            $table->string('numero_boleta', 45)->nullable();
-            $table->date('fecha_emision');
-            $table->string('detalles', 100)->nullable();
-            $table->timestamps();
+        Schema::table('pedidos', function (Blueprint $table) {
+            $table->double('Monto_total')->nullable()->change();
         });
     }
 
@@ -29,7 +25,9 @@ class CreateBoletasTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('boletas');
+        Schema::table('pedidos', function (Blueprint $table) {
+            $table->double('Monto_total')->nullable(false)->change();
+        });
     }
 }
 
