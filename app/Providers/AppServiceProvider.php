@@ -4,8 +4,6 @@ namespace App\Providers;
 
 use Illuminate\Support\ServiceProvider;
 
-use App\Models\Comentario;
-use App\Policies\ComentarioPolicy;
 class AppServiceProvider extends ServiceProvider
 {
     /**
@@ -19,10 +17,8 @@ class AppServiceProvider extends ServiceProvider
     /**
      * Bootstrap any application services.
      */
-    
-    protected $policies = [
-        Comentario::class => ComentarioPolicy::class,
-    ];
-
-    
+    public function boot(): void
+    {
+        //
+    }
 }

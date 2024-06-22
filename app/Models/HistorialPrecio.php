@@ -9,12 +9,10 @@ class HistorialPrecio extends Model
 {
     use HasFactory;
 
-    protected $primaryKey = 'id_historial';
-
     protected $fillable = [
-        'id_producto',
-        'precio_anterior',
-        'precio_nuevo',
+        'id_producto', 
+        'precio_anterior', 
+        'precio_nuevo', 
         'fecha_modificacion',
     ];
 
@@ -23,4 +21,3 @@ class HistorialPrecio extends Model
         return $this->belongsTo(Producto::class, 'id_producto');
     }
 }
-

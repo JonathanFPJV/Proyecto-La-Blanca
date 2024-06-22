@@ -3,48 +3,42 @@
 namespace App\Http\Controllers\Auth;
 
 use App\Http\Controllers\Controller;
-use Illuminate\Support\Facades\Auth;
-use Laravel\Socialite\Facades\Socialite;
-use Illuminate\Http\Request;
+use Socialite;
 use App\Models\User;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Validator;
 
 class GoogleController extends Controller
 {
-    /**
-     * Redirect the user to the Google authentication page.
-     *
-     * @return \Illuminate\Http\Response
-     */
     public function redirectToGoogle()
     {
         return Socialite::driver('google')->redirect();
     }
 
-    /**
-     * Obtain the user information from Google.
-     *
-     * @return \Illuminate\Http\Response
-     */
     public function handleGoogleCallback()
     {
-        $user_google = Socialite::driver('google')->user();
+        try {
+            $user = Socialite::driver('google')->stateless()->user();
+            $finduser = User::where('email', $user->email)->first();
 
-        // Update or create the user
-        $user = User::updateOrCreate([
-            'google_id' => $user_google->id,
-        ], [
-            'name' => $user_google->name,
-            'email' => $user_google->email,
-            'avatar' => $user_google->avatar,
-            'avatar_original' => $user_google->avatar_original,
-            'token' => $user_google->token,
-            'ID_Tipo' => 3, // Asignar automáticamente el tipo de usuario
-            'estado' => 'activo', // Asignar automáticamente el estado activo
-        ]);
+            if ($finduser) {
+                Auth::login($finduser);
+            } else {
+                $newUser = User::create([
+                    'name' => $user->name,
+                    'email' => $user->email,
+                    'google_id' => $user->id,
+                    'password' => Hash::make('my-google'), // Puedes cambiar esto a una cadena generada de forma segura
+                ]);
 
-        Auth::login($user);
+                Auth::login($newUser);
+            }
 
-        return redirect('/la_blanca');
+            return redirect()->intended('/');
+        } catch (\Exception $e) {
+            return redirect('/login')->with('error', 'Hubo un problema con la autenticación de Google');
+        }
     }
 }
 

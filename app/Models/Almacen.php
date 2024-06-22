@@ -9,17 +9,13 @@ class Almacen extends Model
 {
     use HasFactory;
 
-    protected $primaryKey = 'Id_Almacen';
-    // Especificamos el nombre de la tabla
-    protected $table = 'almacenes';
-
     protected $fillable = [
-        'Nombre_almacen',
-        'Direccion_almacen',
-        'Capacidad',
-        'capacidad_disponible',
-        'estado',
-        'tipo'
+        'Nombre_almacen', 
+        'Direccion_almacen', 
+        'Capacidad', 
+        'capacidad_disponible', 
+        'estado', 
+        'tipo',
     ];
 
     public function logistica()

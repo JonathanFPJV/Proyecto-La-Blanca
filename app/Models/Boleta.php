@@ -10,9 +10,9 @@ class Boleta extends Model
     use HasFactory;
 
     protected $fillable = [
-        'numero_boleta',
-        'fecha_emision',
-        'detalles'
+        'numero_boleta', 
+        'fecha_emision', 
+        'detalles',
     ];
 
     public function pedidos()
@@ -20,4 +20,3 @@ class Boleta extends Model
         return $this->hasMany(Pedido::class, 'id_boleta');
     }
 }
-

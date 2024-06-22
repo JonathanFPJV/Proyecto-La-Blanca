@@ -9,16 +9,13 @@ class Logistica extends Model
 {
     use HasFactory;
 
-    protected $primaryKey = 'Id_Logistica';
-
     protected $fillable = [
-        'Id_usuario',
-        'Id_Almacen',
-        'Id_Producto',
-        'n_orden',
-        'stock',
-        'Fecha',
-        'Cantidad'
+        'Id_usuario', 
+        'Id_Almacen', 
+        'Id_Producto', 
+        'n_orden', 
+        'stock', 
+        'Cantidad',
     ];
 
     public function user()
@@ -38,6 +35,6 @@ class Logistica extends Model
 
     public function compra()
     {
-        return $this->belongsTo(Compra::class, 'n_orden', 'id_orden');
+        return $this->belongsTo(Compra::class, 'n_orden');
     }
 }

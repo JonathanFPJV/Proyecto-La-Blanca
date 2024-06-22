@@ -1,0 +1,349 @@
+/* Estilos generales */
+body, h1, h2, h3, p, ul, ol, li, input, button, a {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: Arial, Helvetica, sans-serif;
+}
+
+/* Estilos para la barra de navegación */
+.navbar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px 20px;
+    background-color: #000;
+    color: #fff;
+}
+
+.navbar-left, .navbar-right {
+    display: flex;
+    align-items: center;
+}
+
+.navbar-left .logo {
+    margin-right: 20px;
+}
+
+.navbar-left .logo img {
+    width: 80px;
+    height: auto;
+    display: block;
+    transition: filter 0.3s ease;
+}
+
+.navbar-left .logo img:hover {
+    filter: brightness(1.2);
+}
+
+.navbar-center {
+    display: flex;
+    align-items: center;
+}
+
+.navbar-center a {
+    margin-right: 15px;
+    text-decoration: none;
+    color: #fff;
+    font-weight: 500;
+    position: relative;
+    transition: color 0.3s, background-color 0.3s;
+    font-family: 'Arial Black', Arial, sans-serif;
+    font-size: 14px;
+    letter-spacing: 0.1em;
+}
+
+.navbar-center a:hover {
+    color: rgb(255, 255, 255);
+    background: linear-gradient(to right, #eeff54, #e9e9e9, #eeff54, #e9e9e9, #eeff54, #e9e9e9, #eeff54);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+}
+
+/* Estilos para el menú de usuario y carrito en la barra de navegación */
+.user-icon, .cart-icon, .fa-heart, .search-icon {
+    font-size: 1.2rem;
+    color: #fff;
+    margin-right: 15px;
+    cursor: pointer;
+}
+
+.user-icon:hover, .cart-icon:hover, .fa-heart:hover, .search-icon:hover {
+    color: rgb(247, 36, 36);
+}
+
+/* Estilos para el menú de usuario desplegable */
+.user-menu {
+    position: relative;
+}
+
+.dropdown-menu {
+    display: none;
+    position: absolute;
+    top: 100%;
+    right: 0;
+    background-color: #fff;
+    color: #000;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    width: 150px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    text-align: left;
+    z-index: 1000;
+    opacity: 0;
+    transform: translateY(-20px) translateX(-100%);
+    transition: all 0.3s ease;
+}
+
+.dropdown-menu.show {
+    display: block;
+    opacity: 1;
+    transform: translateY(0) translateX(-100%);
+}
+
+.dropdown-menu a {
+    display: block;
+    padding: 10px;
+    text-decoration: none;
+    color: #000;
+    font-size: 0.9rem;
+    transition: background-color 0.3s ease;
+}
+
+.dropdown-menu a:hover {
+    background-color: #c4c4c4;
+}
+
+/* Estilos para el cuadro de búsqueda */
+.search-bar {
+    display: none;
+    position: absolute;
+    top: 100%;
+    right: 50px;
+    background-color: #fff;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    padding: 5px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    z-index: 1100; /* Asegúrate de que esté encima de otros elementos */
+}
+
+.search-bar input {
+    border: none;
+    outline: none;
+    padding: 5px;
+    border-radius: 4px;
+}
+
+.search-bar button {
+    border: none;
+    background-color: #333;
+    color: #fff;
+    padding: 5px;
+    cursor: pointer;
+    border-radius: 4px;
+    margin-left: 5px;
+}
+
+.search-bar.show {
+    display: flex;
+    align-items: center;
+}
+
+/* Estilos para el pie de página */
+.footer {
+    background-color: #000;
+    color: #fff;
+    padding: 20px;
+    text-align: center;
+}
+
+.footer-logo img {
+    width: 50px;
+    height: auto;
+}
+
+/* Estilos para la grid de productos */
+.product-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 20px;
+    padding: 20px;
+}
+
+.product-card {
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    overflow: hidden;
+    background-color: #fff;
+    text-align: center;
+    transition: transform 0.2s;
+}
+
+.product-card img {
+    width: 100%;
+    height: auto;
+}
+
+.product-card .product-info {
+    padding: 15px;
+}
+
+.product-card h3 {
+    margin-bottom: 10px;
+    font-size: 1.2rem;
+}
+
+.product-card p {
+    font-size: 0.9rem;
+    color: #666;
+}
+
+.product-card .price {
+    font-size: 1rem;
+    font-weight: bold;
+    color: #333;
+}
+
+.product-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+}
+
+/* Estilos para el carrusel */
+.carousel-inner img {
+    height: auto;
+    max-height: 500px;
+    object-fit: cover;
+    width: 100%;
+}
+
+.carousel-control-prev,
+.carousel-control-next {
+    display: none;
+}
+
+/* Ajustes para indicadores */
+.carousel-indicators [data-bs-target] {
+    background-color: #000;
+}
+
+/* Footer Styles */
+.footer {
+    background-color: #f8f9fa;
+    padding: 40px 0;
+    color: #343a40;
+    font-family: Arial, Helvetica, sans-serif;
+}
+
+.footer .container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.footer-sections {
+    display: flex;
+    justify-content: space-between;
+    width: 100%;
+    max-width: 1200px;
+    margin-bottom: 40px;
+}
+
+.footer-section {
+    flex: 1;
+    margin: 0 20px;
+}
+
+.footer-section h5 {
+    font-size: 18px;
+    margin-bottom: 20px;
+    color: #000;
+}
+
+.footer-section ul {
+    list-style: none;
+    padding: 0;
+}
+
+.footer-section ul li {
+    margin-bottom: 10px;
+}
+
+.footer-section ul li a {
+    color: #343a40;
+    text-decoration: none;
+    transition: color 0.3s, background-color 0.3s;
+    position: relative;
+    background: linear-gradient(90deg, rgba(255,0,0,1) 0%, rgba(255,154,0,1) 20%, rgba(208,222,33,1) 40%, rgba(79,220,74,1) 60%, rgba(63,218,216,1) 80%, rgba(47,128,237,1) 100%);
+    background-size: 200% auto;
+    color: #000;
+    background-clip: text;
+    text-fill-color: transparent;
+    transition: all 0.4s ease;
+}
+
+.footer-section ul li a:hover {
+    background-position: 100% 0;
+    color: #000;
+    text-decoration: none;
+}
+
+/* Redes Sociales */
+.footer-social ul {
+    list-style: none;
+    padding: 0;
+}
+
+.footer-social ul li {
+    display: flex;
+    align-items: center;
+    margin-bottom: 10px;
+}
+
+.footer-social ul li i {
+    margin-right: 10px;
+}
+
+.footer-social ul li a {
+    color: #343a40;
+    text-decoration: none;
+    transition: color 0.3s;
+}
+
+.footer-social ul li a:hover {
+    color: #007bff;
+}
+
+.footer-bottom {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    border-top: 1px solid #ced4da;
+    padding-top: 20px;
+    width: 100%;
+    max-width: 1200px;
+}
+
+.footer-bottom div {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    margin-bottom: 10px;
+}
+
+.footer-bottom div a {
+    color: #343a40;
+    text-decoration: none;
+    margin: 5px 10px;
+    transition: color 0.3s;
+}
+
+.footer-bottom div a:hover {
+    color: #007bff;
+}
+
+.footer-bottom p {
+    margin: 0;
+    color: #6c757d;
+}

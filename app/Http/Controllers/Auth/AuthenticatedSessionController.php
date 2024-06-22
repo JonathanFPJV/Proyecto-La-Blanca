@@ -28,15 +28,7 @@ class AuthenticatedSessionController extends Controller
 
         $request->session()->regenerate();
 
-        $user = Auth::user();
-
-        if ($user->ID_Tipo == 1) {
-            return redirect()->route('la_blanca_admin');
-        } elseif ($user->ID_Tipo == 2) {
-            return redirect()->route('la_blanca_work');
-        } else {
-            return redirect()->route('la_blanca');
-        }
+        return redirect()->intended(route('home', absolute: false));
     }
 
     /**
@@ -50,7 +42,6 @@ class AuthenticatedSessionController extends Controller
 
         $request->session()->regenerateToken();
 
-        return redirect('/la_blanca');
+        return redirect('/');
     }
 }
-

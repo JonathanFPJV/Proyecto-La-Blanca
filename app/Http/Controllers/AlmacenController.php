@@ -1,4 +1,5 @@
 <?php
+
 namespace App\Http\Controllers;
 
 use App\Models\Almacen;
@@ -9,60 +10,62 @@ class AlmacenController extends Controller
     public function index()
     {
         $almacenes = Almacen::all();
-        return view('almacenes.index', compact('almacenes'));
+        return view('admin.almacenes.index', compact('almacenes'));
     }
 
     public function create()
     {
-        return view('almacenes.create');
+        return view('admin.almacenes.create');
     }
 
     public function store(Request $request)
     {
         $request->validate([
-            'Nombre_almacen' => 'required|string|max:255',
-            'Direccion_almacen' => 'required|string|max:255',
-            'Capacidad' => 'required|integer',
-            'estado' => 'required|string|max:255',
-            'tipo' => 'required|string|max:255',
+            'Nombre_almacen' => 'required',
+            'Direccion_almacen' => 'required',
+            'Capacidad' => 'required|numeric',
+            'estado' => 'required',
+            'tipo' => 'required',
         ]);
 
-        // Calculamos la capacidad disponible igual a la capacidad
-        $request['capacidad_disponible'] = $request->Capacidad;
+        $almacen = new Almacen;
+        $almacen->Nombre_almacen = $request->Nombre_almacen;
+        $almacen->Direccion_almacen = $request->Direccion_almacen;
+        $almacen->Capacidad = $request->Capacidad;
+        $almacen->capacidad_disponible = $request->Capacidad;
+        $almacen->estado = $request->estado;
+        $almacen->tipo = $request->tipo;
+        $almacen->save();
 
-        Almacen::create($request->all());
-
-        return redirect()->route('almacenes.index')->with('success', 'Almacén creado exitosamente.');
-    }
-
-
-    public function show($id)
-    {
-        $almacen = Almacen::findOrFail($id);
-        return view('almacenes.show', compact('almacen'));
+        return redirect()->route('admin.almacenes.index')->with('success', 'Almacén añadido con éxito');
     }
 
     public function edit($id)
     {
         $almacen = Almacen::findOrFail($id);
-        return view('almacenes.edit', compact('almacen'));
+        return view('admin.almacenes.edit', compact('almacen'));
     }
 
     public function update(Request $request, $id)
     {
         $request->validate([
-            'Nombre_almacen' => 'required|string|max:255',
-            'Direccion_almacen' => 'required|string|max:255',
-            'Capacidad' => 'required|integer',
-            'capacidad_disponible' => 'required|integer',
-            'estado' => 'required|string|max:255',
-            'tipo' => 'required|string|max:255',
+            'Nombre_almacen' => 'required',
+            'Direccion_almacen' => 'required',
+            'Capacidad' => 'required|numeric',
+            'estado' => 'required',
+            'tipo' => 'required',
         ]);
 
         $almacen = Almacen::findOrFail($id);
-        $almacen->update($request->all());
+        $almacen->Nombre_almacen = $request->Nombre_almacen;
+        $almacen->Direccion_almacen = $request->Direccion_almacen;
+        $almacen->Capacidad = $request->Capacidad;
+        $almacen->capacidad_disponible = $request->Capacidad - ($almacen->Capacidad - $almacen->capacidad_disponible);
+        $almacen->estado = $request->estado;
+        $almacen->tipo = $request->tipo;
+        $almacen->save();
 
-        return redirect()->route('almacenes.index')->with('success', 'Almacén actualizado exitosamente.');
+        return redirect()->route('admin.almacenes.index')->with('success', 'Almacén actualizado con éxito');
     }
 
     public function destroy($id)
@@ -70,7 +73,6 @@ class AlmacenController extends Controller
         $almacen = Almacen::findOrFail($id);
         $almacen->delete();
 
-        return redirect()->route('almacenes.index')->with('success', 'Almacén eliminado exitosamente.');
+        return redirect()->route('admin.almacenes.index')->with('success', 'Almacén eliminado con éxito');
     }
 }
-

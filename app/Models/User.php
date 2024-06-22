@@ -2,14 +2,15 @@
 
 namespace App\Models;
 
-// use Illuminate\Contracts\Auth\MustVerifyEmail;
+use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
+use Laravel\Sanctum\HasApiTokens;
 
 class User extends Authenticatable
 {
-    use HasFactory, Notifiable;
+    use HasApiTokens, HasFactory, Notifiable;
 
     /**
      * The attributes that are mass assignable.
@@ -29,7 +30,7 @@ class User extends Authenticatable
         'telefono',
         'estado',
         'ID_Tipo',
-        'google_id'
+        'google_id',
     ];
 
     /**
@@ -43,36 +44,44 @@ class User extends Authenticatable
     ];
 
     /**
-     * Get the attributes that should be cast.
+     * The attributes that should be cast.
      *
-     * @return array<string, string>
+     * @var array<string, string>
      */
-    protected function casts(): array
-    {
-        return [
-            'email_verified_at' => 'datetime',
-            'password' => 'hashed',
-        ];
-    }
+    protected $casts = [
+        'email_verified_at' => 'datetime',
+        'password' => 'hashed',
+    ];
 
+    /**
+     * Get the user's tipoUsuario.
+     */
     public function tipoUsuario()
     {
         return $this->belongsTo(TipoUsuario::class, 'ID_Tipo');
     }
 
-    public function cuentaBancaria()
-    {
-        return $this->hasMany(CuentaBancaria::class, 'ID_Usuario');
-    }
-
+    /**
+     * Get the user's comentarios.
+     */
     public function comentarios()
     {
         return $this->hasMany(Comentario::class, 'ID_Usuario');
     }
 
-    public function logistica()
+    /**
+     * Get the user's cuentaBancaria.
+     */
+    public function cuentaBancaria()
     {
-        return $this->hasMany(Logistica::class, 'Id_usuario');
+        return $this->hasOne(CuentaBancaria::class, 'ID_Usuario');
     }
 
+    /**
+     * Get the user's pedidos.
+     */
+    public function pedidos()
+    {
+        return $this->hasMany(Pedido::class, 'ID_Usuario');
+    }
 }

@@ -9,14 +9,16 @@ class Envio extends Model
 {
     use HasFactory;
 
-    protected $primaryKey = 'id';
-
     protected $fillable = [
-        'n_envio', 'Monto', 'Fecha_ENTREGA', 'Direccion_entrega', 'Estado'
+        'n_envio', 
+        'Monto', 
+        'Fecha_ENTREGA', 
+        'Direccion_entrega', 
+        'Estado',
     ];
 
     public function compras()
     {
-        return $this->hasMany(Compra::class, 'id_envio', 'n_envio');
+        return $this->hasMany(Compra::class, 'id_envio');
     }
 }

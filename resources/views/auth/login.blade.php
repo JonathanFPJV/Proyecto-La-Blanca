@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="es">
+<html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -7,45 +7,47 @@
     <link href="{{ asset('css/styles_log.css') }}" rel="stylesheet">
 </head>
 <body>
-    <div class="card">
-        <h2>Iniciar Sesión</h2>
-        <p class="register-link">¿Es tu primera vez? <a href="{{ route('register') }}">Regístrate</a></p>
+    <div class="login-container">
+        <div class="login-content">
+            <h2>Iniciar Sesión</h2>
+            <p class="register-link">¿Es tu primera vez? <a href="{{ route('register') }}">Regístrate</a></p>
+            <form method="POST" action="{{ route('login') }}" class="form-container">
+                @csrf
 
-        <x-auth-session-status class="mb-4" :status="session('status')" />
+                <!-- Email Address -->
+                <div class="input-group">
+                    <input id="email" type="email" name="email" :value="old('email')" required autofocus placeholder="Correo electrónico">
+                </div>
 
-        <form method="POST" action="{{ route('login') }}" class="form-container">
-            @csrf
+                <!-- Password -->
+                <div class="input-group">
+                    <input id="password" type="password" name="password" required placeholder="Contraseña">
+                </div>
 
-            <!-- Email Address -->
-            <div class="input-group">
-                <input id="email" type="email" name="email" :value="old('email')" required autofocus placeholder="Correo electrónico" class="input-text">
-                <x-input-error :messages="$errors->get('email')" class="mt-2" />
-            </div>
+                <!-- Forgot Password -->
+                <p class="forgot-password">
+                    @if (Route::has('password.request'))
+                        <a href="{{ route('password.request') }}">Olvidé mi contraseña</a>
+                    @endif
+                </p>
 
-            <!-- Password -->
-            <div class="input-group">
-                <input id="password" type="password" name="password" required placeholder="Contraseña" class="input-text">
-                <x-input-error :messages="$errors->get('password')" class="mt-2" />
-            </div>
+                <!-- Submit Button -->
+                <button type="submit" class="button">Ingresar</button>
 
-            <!-- Forgot Password -->
-            <p class="forgot-password">
-                @if (Route::has('password.request'))
-                    <a href="{{ route('password.request') }}">Olvidé mi contraseña</a>
-                @endif
-            </p>
+                <!-- Separator -->
+                <div class="separator">o</div>
 
-            <!-- Submit Button -->
-            <button type="submit" class="button">Ingresar</button>
-
-            <!-- Separator -->
-            <div class="separator">o</div>
-
-            <!-- Google Sign-In -->
-            <a href="/google-auth/redirect" class="google-btn">
-                <img src="https://th.bing.com/th/id/R.70d3828eb9c953441e50f122d616c91e?rik=8seAHZVho%2bGlIg&pid=ImgRaw&r=0" alt="Google" style="width: 20px; height: 20px; margin-right: 10px;">Iniciar sesión con Google
-            </a>
-        </form>
+                <!-- Google Sign-In -->
+                <a href="{{ route('auth.google') }}" class="google-btn">
+                    <img src="{{ asset('images/google_icon.png') }}" alt="Google" class="google-icon">Iniciar sesión con Google
+                </a>
+            </form>
+        </div>
+        <div class="login-image">
+            <!-- Imagen de fondo -->
+            <img src="{{ asset('images/login-image.jpg') }}" alt="Login Image">
+        </div>
     </div>
 </body>
 </html>
+

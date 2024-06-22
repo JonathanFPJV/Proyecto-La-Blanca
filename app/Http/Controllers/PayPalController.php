@@ -2,69 +2,96 @@
 
 namespace App\Http\Controllers;
 
-use App\Services\PayPalService;
 use Illuminate\Http\Request;
-use PayPalCheckoutSdk\Orders\OrdersCreateRequest;
-use PayPalCheckoutSdk\Orders\OrdersCaptureRequest;
-use Illuminate\Support\Facades\Log;
+use App\Models\Pedido;
+use PayPal\Api\Payer;
+use PayPal\Api\Amount;
+use PayPal\Api\Transaction;
+use PayPal\Api\RedirectUrls;
+use PayPal\Api\Payment;
+use PayPal\Api\PaymentExecution;
 
 class PayPalController extends Controller
 {
-    private $payPalService;
+    private $apiContext;
 
-    public function __construct(PayPalService $payPalService)
+    public function __construct()
     {
-        $this->payPalService = $payPalService;
+        $this->apiContext = new \PayPal\Rest\ApiContext(
+            new \PayPal\Auth\OAuthTokenCredential(
+                config('paypal.client_id'),
+                config('paypal.secret')
+            )
+        );
+
+        $this->apiContext->setConfig(config('paypal.settings'));
     }
 
-    public function createOrder(Request $request)
+    public function payWithPayPal($orderId)
     {
-        $request = new OrdersCreateRequest();
-        $request->prefer('return=representation');
-        $request->body = [
-            'intent' => 'CAPTURE',
-            'purchase_units' => [[
-                'amount' => [
-                    'value' => '100.00',
-                    'currency_code' => 'USD'
-                ]
-            ]],
-            'application_context' => [
-                'cancel_url' => route('paypal.cancel'),
-                'return_url' => route('paypal.return'),
-            ] 
-        ];
+        $pedido = Pedido::findOrFail($orderId);
+        
+        $payer = new Payer();
+        $payer->setPaymentMethod('paypal');
+
+        $amount = new Amount();
+        $amount->setTotal($pedido->total);
+        $amount->setCurrency('USD');
+
+        $transaction = new Transaction();
+        $transaction->setAmount($amount);
+        $transaction->setDescription('Compra en La Blanca');
+
+        $redirectUrls = new RedirectUrls();
+        $redirectUrls->setReturnUrl(route('paypal.status'))
+            ->setCancelUrl(route('paypal.status'));
+
+        $payment = new Payment();
+        $payment->setIntent('Sale')
+            ->setPayer($payer)
+            ->setTransactions([$transaction])
+            ->setRedirectUrls($redirectUrls);
 
         try {
-            $response = $this->payPalService->client()->execute($request);
-            return response()->json($response);
-        } catch (\Exception $e) {
-            Log::error($e->getMessage());
-            return response()->json(['error' => 'Unable to create PayPal order'], 500);
+            $payment->create($this->apiContext);
+        } catch (\PayPal\Exception\PayPalConnectionException $ex) {
+            return redirect()->route('cart')->with('error', 'Error al conectar con PayPal');
         }
+
+        foreach ($payment->getLinks() as $link) {
+            if ($link->getRel() == 'approval_url') {
+                $redirectUrl = $link->getHref();
+                break;
+            }
+        }
+
+        return redirect()->away($redirectUrl);
     }
 
-    public function captureOrder($orderId)
+    public function payPalStatus(Request $request)
     {
-        $request = new OrdersCaptureRequest($orderId);
-        $request->prefer('return=representation');
+        $paymentId = $request->paymentId;
+        $payerId = $request->PayerID;
+
+        if (empty($paymentId) || empty($payerId)) {
+            return redirect()->route('home')->with('error', 'Pago cancelado');
+        }
+
+        $payment = Payment::get($paymentId, $this->apiContext);
+        $execution = new PaymentExecution();
+        $execution->setPayerId($payerId);
 
         try {
-            $response = $this->payPalService->client()->execute($request);
-            return response()->json($response);
-        } catch (\Exception $e) {
-            Log::error($e->getMessage());
-            return response()->json(['error' => 'Unable to capture PayPal order'], 500);
+            $result = $payment->execute($execution, $this->apiContext);
+
+            if ($result->getState() == 'approved') {
+                // Actualizar el pedido a pagado
+                return redirect()->route('home')->with('success', 'Pago realizado exitosamente');
+            }
+        } catch (\PayPal\Exception\PayPalConnectionException $ex) {
+            return redirect()->route('home')->with('error', 'Error al procesar el pago');
         }
-    }
 
-    public function cancel()
-    {
-        return response()->json(['status' => 'Payment was cancelled']);
-    }
-
-    public function return()
-    {
-        return response()->json(['status' => 'Payment was successful']);
+        return redirect()->route('home')->with('error', 'Pago no realizado');
     }
 }

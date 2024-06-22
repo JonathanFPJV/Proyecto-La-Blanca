@@ -35,7 +35,7 @@
             </div>
 
             <!-- Password -->
-            <div class="input-group single">
+            <div class="input-group">
                 <input type="password" name="password" placeholder="Contraseña" required>
                 <input type="password" name="password_confirmation" placeholder="Confirmar contraseña" required>
             </div>
@@ -49,11 +49,12 @@
             </p>
 
             <!-- Google Sign-In -->
-            <a href="/google-auth/redirect" class="button-google">
+            <a href="{{ route('auth.google') }}" class="button-google">
                 <img src="https://th.bing.com/th/id/R.70d3828eb9c953441e50f122d616c91e?rik=8seAHZVho%2bGlIg&pid=ImgRaw&r=0" alt="Google" class="icon-google" />Registrarse con Google
             </a>
         </form>
     </div>
 </body>
 </html>
+
 

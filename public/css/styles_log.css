@@ -1,85 +1,106 @@
-/* General Body Style */
+/* Estilos generales del cuerpo */
 body {
     font-family: 'Arial', sans-serif;
-    background-color: #f4f4f4;
+    background-color: rgb(238, 238, 238); /* Fondo negro */
     margin: 0;
-    height: 100vh; /* Full height */
+    height: 100vh; /* Altura completa */
     display: flex;
-    align-items: center; /* Center vertically */
-    justify-content: center; /* Center horizontally */
+    align-items: center; /* Centrar verticalmente */
+    justify-content: center; /* Centrar horizontalmente */
+    color: #fff; /* Color de texto blanco */
 }
 
-/* Card Style */
-.card {
-    background: white;
-    border-radius: 30px;
+/* Contenedor de login */
+.login-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100%;
+    padding: 20px;
+}
+
+/* Contenido de login */
+.login-content {
+    background: #fff; /* Fondo blanco */
+    border-radius: 8px;
     box-shadow: 0 10px 50px rgba(0, 0, 0, 0.2);
+    padding: 40px;
     width: 400px;
-    padding: 60px;
-}
-
-/* Header Style */
-.card h2 {
-    font-size: 24px;
-    color: #333;
-    margin-bottom: 50px; /* Aumenta este valor para más espacio */
     text-align: center;
 }
 
-/* Link Style */
-.card p {
-    color: #000; /* Black color for text */
-    text-align: center; /* Centers the text */
-    margin: 10px 05; /* Adds space above and below */
+/* Imagen de login */
+.login-image img {
+    border-radius: 8px;
+    width: 400px;
+    height: 100%;
+    object-fit: cover; /* Ajustar la imagen para cubrir el contenedor */
 }
 
-.card a {
-    color: #000000;
+/* Estilo del encabezado */
+.login-content h2 {
+    font-size: 24px;
+    color: #333;
+    margin-bottom: 20px;
+}
+
+/* Estilo de enlace */
+.login-content p {
+    color: #000; /* Color negro para el texto */
+    text-align: center; /* Centrar el texto */
+    margin: 10px 0; /* Añadir espacio arriba y abajo */
+}
+
+.login-content a {
+    color: #000;
     text-decoration: none;
 }
 
-.card a:hover {
+.login-content a:hover {
     text-decoration: underline;
 }
 
-/* Input Fields Style */
+/* Estilo de campos de entrada */
 .input-group {
     margin-bottom: 20px;
 }
 
 .input-group input {
-    width: 90%;
-    padding: 20px;
+    width: 100%;
+    padding: 15px;
     border: 1px solid #ccc;
     border-radius: 4px;
+    font-size: 16px;
 }
 
-/* Button Style */
+/* Estilo del botón */
 .button {
-    background-color: #ff6347; /* Tomato */
-    color: white;
+    background-color: #000; /* Fondo negro para el botón */
+    color: #fff; /* Texto blanco */
     border: none;
     padding: 15px 20px;
     text-align: center;
     text-decoration: none;
-    display: block; /* Cambiado de inline-block a block para permitir el centrado automático */
+    display: inline-block;
     font-size: 16px;
-    margin: 4px auto; /* Actualizado para centrar horizontalmente */
+    margin: 10px 0;
     cursor: pointer;
-    border-radius: 40px;
-    width: 50%;
+    border-radius: 30px; /* Esquinas redondas */
+    width: 100%;
+    transition: background-color 0.3s ease;
 }
 
 .button:hover {
-    background-color: #ff4500; /* OrangeRed */
+    background-color: #333; /* Cambio de color al pasar el mouse */
 }
 
-/* Separator Style */
+/* Estilo del separador */
 .separator {
     display: flex;
     align-items: center;
     text-align: center;
-    margin: 20px 10;
+    margin: 20px 0;
+    color: #ccc; /* Color gris claro para el separador */
 }
 
 .separator::before,
@@ -97,14 +118,20 @@ body {
     margin-left: .25em;
 }
 
-/* Google Button Style */
+/* Estilo del botón de Google */
 .google-btn {
-    
-    color: white;
-    border-radius: 4px;
-    padding: 10px;
+    color: #fff;
+    border-radius: 30px;
+    padding: 15px 20px;
     display: block;
     text-align: center;
-    width: 100%;
+    background-color: #42f46e; /* Color de fondo de Google */
+    text-decoration: none;
+    margin-top: 10px;
 }
 
+.google-btn img {
+    width: 20px; /* Ajusta el tamaño del icono de Google si es necesario */
+    margin-right: 10px;
+    vertical-align: middle; /* Alinear verticalmente con el texto */
+}

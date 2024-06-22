@@ -1,63 +1,65 @@
 <?php
 
 use App\Http\Controllers\ProfileController;
-use Illuminate\Support\Facades\Route;
-use App\Http\Controllers\PayPalController;
-use Laravel\Socialite\Facades\Socialite;
+use App\Http\Controllers\ProductoController;
 use App\Http\Controllers\Auth\GoogleController;
-use App\Models\User;
-use Illuminate\Support\Facades\Auth;
-use App\Http\Controllers\AlmacenController;
-use App\Http\Controllers\LogisticaController;
-use App\Http\Controllers\ProductosController;
-use App\Http\Controllers\CategoriaController;
+use App\Http\Controllers\CarritoController;
+use App\Http\Controllers\FavoritoController;
+use App\Http\Controllers\PedidoController;
+use App\Http\Controllers\ComentarioController;
+use App\Http\Controllers\BoletaController;
+use App\Http\Controllers\AdminController;
+use Illuminate\Support\Facades\Route;
 
-Route::get('/', function () {
-    return view('welcome');
-});
+Route::get('/', [ProductoController::class, 'index'])->name('home');
+Route::get('/productos', [ProductoController::class, 'index'])->name('productos.index');
+Route::get('/productos/{id}', [ProductoController::class, 'show'])->name('productos.show');
 
-Route::get('/google-auth/redirect', function () {
-    return Socialite::driver('google')->redirect();
-});
+Route::get('/polos', [ProductoController::class, 'polos'])->name('polos');
+Route::get('/pantalones', [ProductoController::class, 'pantalones'])->name('pantalones');
+Route::get('/gorras', [ProductoController::class, 'gorras'])->name('gorras');
+Route::get('/poleras', [ProductoController::class, 'poleras'])->name('poleras');
+Route::get('/zapatillas', [ProductoController::class, 'zapatillas'])->name('zapatillas');
+Route::get('/medias', [ProductoController::class, 'medias'])->name('medias');
 
-Route::get('/google-auth/callback', [GoogleController::class, 'handleGoogleCallback']);
+Route::get('/carrito', [CarritoController::class, 'index'])->name('carrito.index');
+Route::post('/carrito/add/{id}', [CarritoController::class, 'add'])->name('carrito.add');
+Route::delete('/carrito/remove/{id}', [CarritoController::class, 'remove'])->name('carrito.remove');
+Route::get('/checkout', [CarritoController::class, 'checkout'])->name('checkout');
+Route::post('/checkout', [CarritoController::class, 'processCheckout'])->name('processCheckout');
 
-Route::get('/dashboard', function () {
-    return view('dashboard');
-})->middleware(['auth', 'verified'])->name('dashboard');
+Route::get('/favoritos', [FavoritoController::class, 'index'])->name('favoritos.index');
+Route::post('/favoritos', [FavoritoController::class, 'store'])->name('favoritos.store');
+Route::delete('/favoritos/{id}', [FavoritoController::class, 'destroy'])->name('favoritos.destroy');
 
-Route::get('/la_blanca', function () {
-    return view('la_blanca');
-})->name('la_blanca');
+Route::get('/pedidos', [PedidoController::class, 'index'])->name('pedidos.index');
+Route::get('/pedidos/{id}', [PedidoController::class, 'show'])->name('pedidos.show');
+Route::post('/pedidos', [PedidoController::class, 'store'])->name('pedidos.store');
 
-Route::get('/la_blanca_admin', function () {
-    return view('la_blanca_admin');
-})->middleware(['auth'])->name('la_blanca_admin');
+Route::get('/comentarios', [ComentarioController::class, 'index'])->name('comentarios.index');
+Route::post('/comentarios', [ComentarioController::class, 'store'])->name('comentarios.store');
+Route::get('/comentarios/{id}/edit', [ComentarioController::class, 'edit'])->name('comentarios.edit');
+Route::patch('/comentarios/{id}', [ComentarioController::class, 'update'])->name('comentarios.update');
+Route::delete('/comentarios/{id}', [ComentarioController::class, 'destroy'])->name('comentarios.destroy');
 
-Route::get('/la_blanca_work', function () {
-    return view('la_blanca_work');
-})->middleware(['auth'])->name('la_blanca_work');
+Route::get('/boletas', [BoletaController::class, 'index'])->name('boletas.index');
+Route::get('/boletas/{id}', [BoletaController::class, 'show'])->name('boletas.show');
 
 Route::middleware('auth')->group(function () {
-    Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
-    Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
+    Route::get('/admin', [AdminController::class, 'index'])->name('admin.dashboard');
+    Route::resource('/admin/productos', AdminController::class, ['as' => 'admin']);
+    Route::resource('/admin/pedidos', AdminController::class, ['as' => 'admin']);
+    Route::resource('/admin/almacenes', AdminController::class, ['as' => 'admin']);
+    
+    // Rutas de perfil
+    Route::get('/profile/edit', [ProfileController::class, 'edit'])->name('profile.edit');
+    Route::put('/profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
-    Route::resource('almacenes', AlmacenController::class);
-    Route::resource('productos', ProductosController::class);
-    Route::resource('logistica', LogisticaController::class);
-    Route::resource('categorias', CategoriaController::class);
 });
 
-Route::prefix('paypal')->group(function () {
-    Route::post('/create-order', [PayPalController::class, 'createOrder'])->name('paypal.createOrder');
-    Route::post('/capture-order/{orderId}', [PayPalController::class, 'captureOrder'])->name('paypal.captureOrder');
-    Route::get('/cancel', [PayPalController::class, 'cancel'])->name('paypal.cancel');
-    Route::get('/return', [PayPalController::class, 'return'])->name('paypal.return');
-});
-
-Route::get('/paypal', function () {
-    return view('paypal');
-});
+// Rutas de autenticación con Google
+Route::get('auth/google', [GoogleController::class, 'redirectToGoogle'])->name('auth.google');
+Route::get('auth/google/callback', [GoogleController::class, 'handleGoogleCallback']);
 
 require __DIR__.'/auth.php';
 

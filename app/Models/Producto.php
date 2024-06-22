@@ -9,24 +9,29 @@ class Producto extends Model
 {
     use HasFactory;
 
-    protected $primaryKey = 'Id_Producto';
+    protected $primaryKey = 'Id_Producto'; // Especifica la clave primaria
 
     protected $fillable = [
-        'Codigo_producto',
-        'Nombre_producto',
-        'Descripcion',
-        'Precio',
-        'id_categoria',
-        'Talla',
-        'Color',
-        'imagen',
+        'Codigo_producto', 
+        'Nombre_producto', 
+        'Descripcion', 
+        'Precio', 
+        'Talla', 
+        'Color', 
+        'id_categoria', 
+        'imagen', 
+        'precio_descuento', 
+        'descuento',
         'image_1',
         'image_2',
         'image_3',
         'image_4',
-        'precio_descuento',
-        'descuento'
     ];
+
+    public function categoria()
+    {
+        return $this->belongsTo(Categoria::class, 'id_categoria');
+    }
 
     public function comentarios()
     {
@@ -36,11 +41,6 @@ class Producto extends Model
     public function logistica()
     {
         return $this->hasMany(Logistica::class, 'Id_Producto');
-    }
-
-    public function categoria()
-    {
-        return $this->belongsTo(Categoria::class, 'id_categoria');
     }
 
     public function historialPrecios()
