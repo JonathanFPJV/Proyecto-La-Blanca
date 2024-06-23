@@ -2,7 +2,7 @@
 
 @section('content')
 <div class="container">
-    <h1>Admin Dashboard</h1>
+    <h1>Administrador Dashboard</h1>
     <p>Welcome, Admin! Here you can manage your store.</p>
     <div class="row">
         <div class="col-md-4">

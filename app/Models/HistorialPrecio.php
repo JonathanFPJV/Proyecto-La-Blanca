@@ -8,6 +8,8 @@ use Illuminate\Database\Eloquent\Model;
 class HistorialPrecio extends Model
 {
     use HasFactory;
+    
+    protected $primaryKey = 'id_historial';
 
     protected $fillable = [
         'id_producto', 

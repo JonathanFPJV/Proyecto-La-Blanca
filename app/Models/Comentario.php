@@ -9,6 +9,8 @@ class Comentario extends Model
 {
     use HasFactory;
 
+    protected $primaryKey = 'id_comentario';
+
     protected $fillable = [
         'Puntuacion', 
         'Fecha', 

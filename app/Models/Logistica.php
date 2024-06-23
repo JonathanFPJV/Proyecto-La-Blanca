@@ -9,6 +9,8 @@ class Logistica extends Model
 {
     use HasFactory;
 
+    protected $primaryKey = 'Id_Logistica';
+
     protected $fillable = [
         'Id_usuario', 
         'Id_Almacen', 

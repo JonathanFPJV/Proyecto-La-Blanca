@@ -9,6 +9,8 @@ class Compra extends Model
 {
     use HasFactory;
 
+    protected $primaryKey = 'idCompras';
+
     protected $fillable = [
         'id_orden', 
         'id_pedido', 

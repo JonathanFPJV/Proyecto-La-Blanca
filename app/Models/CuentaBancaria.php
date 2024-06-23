@@ -9,6 +9,8 @@ class CuentaBancaria extends Model
 {
     use HasFactory;
 
+    protected $primaryKey = 'id_cuenta';
+
     protected $fillable = [
         'Tipo_cuenta', 
         'Nombre_banco', 
