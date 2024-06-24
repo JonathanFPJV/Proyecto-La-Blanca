@@ -7,7 +7,7 @@
         @foreach($productos as $producto)
             <div class="col-md-4">
                 <div class="card">
-                    <img src="{{ asset('storage/productos/' . $producto->imagen) }}" class="card-img-top" alt="{{ $producto->Nombre_producto }}">
+                <img src="{{ asset('storage/' . $producto->imagen) }}" class="card-img-top" alt="{{ $producto->Nombre_producto }}">
                     <div class="card-body">
                         <h5 class="card-title">{{ $producto->Nombre_producto }}</h5>
                         <p class="card-text">{{ $producto->Descripcion }}</p>
