@@ -3,18 +3,26 @@
 namespace App\Http\Controllers;
 
 use App\Models\Producto;
+use App\Models\Almacen;
+use App\Models\Logistica;
 use App\Models\Categoria;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Storage;
 
 class ProductoController extends Controller
 {
-    public function index()
+    public function inicio()
     {
         $productos = Producto::all();
         $categorias = Categoria::all();
         return view('home', compact('productos', 'categorias'));
     }
 
+    public function index() {
+        $productos = Producto::with(['logistica.almacen', 'categoria'])->get();
+        return view('admin.productos.index', compact('productos'));
+    }
     public function show($id)
     {
         $producto = Producto::findOrFail($id);
@@ -71,27 +79,74 @@ class ProductoController extends Controller
 
     public function create()
     {
+        $almacenes = Almacen::all();
         $categorias = Categoria::all();
-        return view('admin.productos.create', compact('categorias'));
+        return view('admin.productos.create', compact('almacenes','categorias'));
     }
 
     public function store(Request $request)
     {
         $request->validate([
-            'Nombre_producto' => 'required',
-            'Descripcion' => 'required',
+            'Codigo_producto' => 'required|string|max:255',
+            'Nombre_producto' => 'required|string|max:255',
+            'Descripcion' => 'required|string',
             'Precio' => 'required|numeric',
-            'imagen' => 'required|image',
-            'id_categoria' => 'required|exists:categorias,id'
+            'id_categoria' => 'required|integer|exists:categorias,id',
+            'Talla' => 'required|string|max:255',
+            'Color' => 'required|string|max:255',
+            'imagen' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
+            'image_1' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
+            'image_2' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
+            'image_3' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
+            'image_4' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
+            
         ]);
 
-        $producto = new Producto;
-        $producto->Nombre_producto = $request->Nombre_producto;
-        $producto->Descripcion = $request->Descripcion;
-        $producto->Precio = $request->Precio;
-        $producto->imagen = $request->file('imagen')->store('productos', 'public');
-        $producto->id_categoria = $request->id_categoria;
-        $producto->save();
+        // Verificar si el código del producto ya existe
+        if (Producto::where('Codigo_producto', $request->Codigo_producto)->exists()) {
+            return redirect()->back()->withErrors(['Codigo_producto' => 'El código del producto ya existe.'])->withInput();
+        }
+
+        // Validar datos adicionales si se seleccionó la opción de añadir stock y almacén
+        if ($request->has('add_stock')) {
+            $request->validate([
+                'almacen_id' => 'required|integer|exists:almacenes,Id_Almacen',
+                'stock' => 'required|integer',
+            ]);
+        }
+        
+        $folder = 'productos/' . $request->Codigo_producto;
+
+        $data = $request->all();
+
+        if ($request->hasFile('imagen')) {
+            $data['imagen'] = $request->file('imagen')->store($folder, 'public');
+        }
+        if ($request->hasFile('image_1')) {
+            $data['image_1'] = $request->file('image_1')->store($folder, 'public');
+        }
+        if ($request->hasFile('image_2')) {
+            $data['image_2'] = $request->file('image_2')->store($folder, 'public');
+        }
+        if ($request->hasFile('image_3')) {
+            $data['image_3'] = $request->file('image_3')->store($folder, 'public');
+        }
+        if ($request->hasFile('image_4')) {
+            $data['image_4'] = $request->file('image_4')->store($folder, 'public');
+        }
+
+        // Crear el producto
+        $producto = Producto::create($data);
+
+         // Si se seleccionó la opción de añadir stock y almacén
+         if ($request->has('add_stock')) {
+            Logistica::create([
+                'Id_usuario' => Auth::id(),
+                'Id_Producto' => $producto->Id_Producto,
+                'Id_Almacen' => $request->almacen_id,
+                'stock' => $request->stock,
+            ]);
+        }
 
         return redirect()->route('admin.productos.index')->with('success', 'Producto añadido con éxito');
     }
@@ -106,32 +161,100 @@ class ProductoController extends Controller
     public function update(Request $request, $id)
     {
         $request->validate([
-            'Nombre_producto' => 'required',
-            'Descripcion' => 'required',
+            'Codigo_producto' => 'required|string|max:255',
+            'Nombre_producto' => 'required|string|max:255',
+            'Descripcion' => 'required|string',
             'Precio' => 'required|numeric',
-            'imagen' => 'image',
-            'id_categoria' => 'required|exists:categorias,id'
+            'id_categoria' => 'required|integer|exists:categorias,id',
+            'Talla' => 'required|string|max:255',
+            'Color' => 'required|string|max:255',
+            'imagen' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
+            'image_1' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
+            'image_2' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
+            'image_3' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
+            'image_4' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
         ]);
 
         $producto = Producto::findOrFail($id);
-        $producto->Nombre_producto = $request->Nombre_producto;
-        $producto->Descripcion = $request->Descripcion;
-        $producto->Precio = $request->Precio;
-        if ($request->hasFile('imagen')) {
-            $producto->imagen = $request->file('imagen')->store('productos', 'public');
-        }
-        $producto->id_categoria = $request->id_categoria;
-        $producto->save();
 
+        $folder = 'productos/' . $producto->Codigo_producto;
+
+        $data = $request->all();
+        if ($request->hasFile('imagen')) {
+            // Borrar la imagen anterior si existe
+            if ($producto->imagen) {
+                Storage::disk('public')->delete($producto->imagen);
+            }
+            $data['imagen'] = $request->file('imagen')->store($folder, 'public');
+        }
+        if ($request->hasFile('image_1')) {
+            if ($producto->image_1) {
+                Storage::disk('public')->delete($producto->image_1);
+            }
+            $data['image_1'] = $request->file('image_1')->store($folder, 'public');
+        }
+        if ($request->hasFile('image_2')) {
+            if ($producto->image_2) {
+                Storage::disk('public')->delete($producto->image_2);
+            }
+            $data['image_2'] = $request->file('image_2')->store($folder, 'public');
+        }
+        if ($request->hasFile('image_3')) {
+            if ($producto->image_3) {
+                Storage::disk('public')->delete($producto->image_3);
+            }
+            $data['image_3'] = $request->file('image_3')->store($folder, 'public');
+        }
+        if ($request->hasFile('image_4')) {
+            if ($producto->image_4) {
+                Storage::disk('public')->delete($producto->image_4);
+            }
+            $data['image_4'] = $request->file('image_4')->store($folder, 'public');
+        }
+
+        $producto->update($data);
+
+        // Actualizar el registro de logística
         return redirect()->route('admin.productos.index')->with('success', 'Producto actualizado con éxito');
     }
 
+
     public function destroy($id)
     {
+        // Obtener el producto
         $producto = Producto::findOrFail($id);
+
+        // Obtener todos los registros de logística asociados al producto
+        $logisticas = Logistica::where('Id_Producto', $id)->get();
+
+        // Verificar si hay registros de logística
+        if ($logisticas->isNotEmpty()) {
+            // Verificar si algún registro de logística tiene stock mayor a cero
+            $hasStock = $logisticas->some(function ($logistica) {
+                return $logistica->stock > 0;
+            });
+
+            if (!$hasStock) {
+                // Borrar todos los registros de logística asociados al producto
+                foreach ($logisticas as $logistica) {
+                    $logistica->delete();
+                }
+            } else {
+                return redirect()->route('admin.productos.index')->with('error', 'El producto tiene stock en algún almacén y no se puede eliminar.');
+            }
+        }
+
+        // Borrar la imagen del producto si existe
+        if ($producto->imagen) {
+            Storage::disk('public')->delete($producto->imagen);
+        }
+
+        // Borrar el producto
         $producto->delete();
 
         return redirect()->route('admin.productos.index')->with('success', 'Producto eliminado con éxito');
     }
+
+
 }
 

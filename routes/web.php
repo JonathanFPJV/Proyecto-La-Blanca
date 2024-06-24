@@ -9,10 +9,12 @@ use App\Http\Controllers\PedidoController;
 use App\Http\Controllers\ComentarioController;
 use App\Http\Controllers\BoletaController;
 use App\Http\Controllers\AdminController;
+use App\Http\Controllers\AlmacenController;
+use App\Http\Controllers\LogisticaController;
 use Illuminate\Support\Facades\Route;
 
-Route::get('/', [ProductoController::class, 'index'])->name('home');
-Route::get('/productos', [ProductoController::class, 'index'])->name('productos.index');
+Route::get('/', [ProductoController::class, 'inicio'])->name('home');
+Route::get('/productos', [ProductoController::class, 'inicio'])->name('productos.index');
 Route::get('/productos/{id}', [ProductoController::class, 'show'])->name('productos.show');
 
 Route::get('/polos', [ProductoController::class, 'polos'])->name('polos');
@@ -32,7 +34,7 @@ Route::get('/favoritos', [FavoritoController::class, 'index'])->name('favoritos.
 Route::post('/favoritos', [FavoritoController::class, 'store'])->name('favoritos.store');
 Route::delete('/favoritos/{id}', [FavoritoController::class, 'destroy'])->name('favoritos.destroy');
 
-Route::get('/pedidos', [PedidoController::class, 'index'])->name('pedidos.index');
+Route::get('/pedidos', [PedidoController::class, 'indice'])->name('pedidos.index');
 Route::get('/pedidos/{id}', [PedidoController::class, 'show'])->name('pedidos.show');
 Route::post('/pedidos', [PedidoController::class, 'store'])->name('pedidos.store');
 
@@ -47,9 +49,12 @@ Route::get('/boletas/{id}', [BoletaController::class, 'show'])->name('boletas.sh
 
 Route::middleware('auth')->group(function () {
     Route::get('/admin', [AdminController::class, 'index'])->name('admin.dashboard');
-    Route::resource('/admin/productos', AdminController::class, ['as' => 'admin']);
-    Route::resource('/admin/pedidos', AdminController::class, ['as' => 'admin']);
-    Route::resource('/admin/almacenes', AdminController::class, ['as' => 'admin']);
+    Route::resource('/admin/productos', ProductoController::class, ['as' => 'admin']);
+    Route::resource('/admin/pedidos', PedidoController::class, ['as' => 'admin']);
+    Route::resource('/admin/almacenes', AlmacenController::class, ['as' => 'admin']);
+    Route::resource('/admin/logistica', LogisticaController::class, ['as' => 'admin']);
+    Route::post('/admin/logistica/search', [LogisticaController::class, 'search'])->name('admin.logistica.search');
+    Route::post('/admin/logistica/get-stock', [LogisticaController::class, 'getStockByAlmacen'])->name('admin.logistica.getStockByAlmacen');
     
     // Rutas de perfil
     Route::get('/profile/edit', [ProfileController::class, 'edit'])->name('profile.edit');

@@ -23,21 +23,23 @@ class AlmacenController extends Controller
         $request->validate([
             'Nombre_almacen' => 'required',
             'Direccion_almacen' => 'required',
-            'Capacidad' => 'required|numeric',
+            'Capacidad' => 'required|numeric|min:0',
             'estado' => 'required',
             'tipo' => 'required',
         ]);
 
-        $almacen = new Almacen;
-        $almacen->Nombre_almacen = $request->Nombre_almacen;
-        $almacen->Direccion_almacen = $request->Direccion_almacen;
-        $almacen->Capacidad = $request->Capacidad;
-        $almacen->capacidad_disponible = $request->Capacidad;
-        $almacen->estado = $request->estado;
-        $almacen->tipo = $request->tipo;
-        $almacen->save();
+        // Calculamos la capacidad disponible igual a la capacidad
+        $request['capacidad_disponible'] = $request->Capacidad;
+
+        Almacen::create($request->all());
 
         return redirect()->route('admin.almacenes.index')->with('success', 'Almacén añadido con éxito');
+    }
+
+    public function show($id)
+    {
+        $almacen = Almacen::findOrFail($id);
+        return view('admin.almacenes.show', compact('almacen'));
     }
 
     public function edit($id)
@@ -51,19 +53,14 @@ class AlmacenController extends Controller
         $request->validate([
             'Nombre_almacen' => 'required',
             'Direccion_almacen' => 'required',
-            'Capacidad' => 'required|numeric',
+            'Capacidad' => 'required|numeric|min:0',
+            'capacidad_disponible' => 'required|integer|min:0',
             'estado' => 'required',
             'tipo' => 'required',
         ]);
 
         $almacen = Almacen::findOrFail($id);
-        $almacen->Nombre_almacen = $request->Nombre_almacen;
-        $almacen->Direccion_almacen = $request->Direccion_almacen;
-        $almacen->Capacidad = $request->Capacidad;
-        $almacen->capacidad_disponible = $request->Capacidad - ($almacen->Capacidad - $almacen->capacidad_disponible);
-        $almacen->estado = $request->estado;
-        $almacen->tipo = $request->tipo;
-        $almacen->save();
+        $almacen->update($request->all());
 
         return redirect()->route('admin.almacenes.index')->with('success', 'Almacén actualizado con éxito');
     }
