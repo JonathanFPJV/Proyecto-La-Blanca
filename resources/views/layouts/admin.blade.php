@@ -19,13 +19,16 @@
                     <a href="{{ route('admin.dashboard') }}">Dashboard</a>
                 </li>
                 <li class="{{ request()->is('admin/productos') || request()->is('admin/productos/*') ? 'active' : '' }}">
-                    <a href="{{ route('admin.productos.index') }}">Productos</a>
+                    <a href="{{ route('admin.productos.index') }}">Logistica</a>
                 </li>
                 <li class="{{ request()->is('admin/pedidos') ? 'active' : '' }}">
                     <a href="{{ route('admin.pedidos.index') }}">Pedidos</a>
                 </li>
                 <li class="{{ request()->is('admin/almacenes') ? 'active' : '' }}">
                     <a href="{{ route('admin.almacenes.index') }}">Almacenes</a>
+                </li>
+                <li class="{{ request()->is('admin/gestorUsers') ? 'active' : '' }}">
+                    <a href="{{ route('admin.gestorUsers.index') }}">Gestion Usuarios</a>
                 </li>
             </ul>
             <!-- Enlace separado para mantenerlo en la parte inferior de la barra lateral -->

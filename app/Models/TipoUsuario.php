@@ -10,6 +10,7 @@ class TipoUsuario extends Model
     use HasFactory;
 
     protected $table = 'tipo_usuarios';
+    protected $primaryKey = 'ID_tipo';
 
     protected $fillable = ['Nombre_tipo'];
 
