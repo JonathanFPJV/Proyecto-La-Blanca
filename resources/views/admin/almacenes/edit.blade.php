@@ -1,6 +1,8 @@
-@extends('layouts.app')
+@extends('layouts.admin')
 
 @section('content')
+<link rel="stylesheet" href="{{ asset('css/almacenes/styles_a.css') }}">
+
 <div class="container">
     <h1>Editar Almacén</h1>
     <form action="{{ route('admin.almacenes.update', $almacen->Id_Almacen) }}" method="POST">
@@ -30,8 +32,10 @@
             <label for="tipo">Tipo</label>
             <input type="text" class="form-control" id="tipo" name="tipo" value="{{ $almacen->tipo }}" required>
         </div>
-        <a href="{{ route('admin.almacenes.index') }}" class="btn btn-secondary">Cancelar</a>
-        <button type="submit" class="btn btn-primary">Guardar Cambios</button>
+        <div class="d-flex justify-content-between">
+            <button type="submit" class="btn btn-primary">Guardar Cambios</button>
+            <a href="{{ route('admin.almacenes.index') }}" class="btn btn-secondary">Cancelar</a>
+        </div>
     </form>
 </div>
 @endsection

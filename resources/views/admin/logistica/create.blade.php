@@ -1,6 +1,8 @@
-@extends('layouts.app')
+@extends('layouts.admin')
 
 @section('content')
+<link rel="stylesheet" href="{{ asset('css/productos/styles_p.css') }}">
+
 <div class="container">
     <h1>{{ isset($logistica) ? 'Editar Logística' : 'Añadir Logística' }}</h1>
 
@@ -14,16 +16,15 @@
         </div>
     </form>
 
-    <!-- Formulario para crear o editar -->
+    <!-- Formulario para crear o editar logística -->
     @if(isset($logistica))
-        <form action="{{ route('admin.logistica.update', $logistica->Id_Logistica) }}" method="POST">
+        <form action="{{ route('admin.logistica.update', $logistica->Id_Logistica) }}" method="POST" class="mb-3">
             @csrf
             @method('PUT')
     @else
-        <form action="{{ route('admin.logistica.store') }}" method="POST">
+        <form action="{{ route('admin.logistica.store') }}" method="POST" class="mb-3">
             @csrf
     @endif
-
         <div class="form-group">
             <label for="Id_Producto">Producto</label>
             <select class="form-control" id="Id_Producto" name="Id_Producto" required>
@@ -51,26 +52,19 @@
             <input type="number" class="form-control" id="stock" name="stock" value="{{ isset($logistica) ? $logistica->stock : '' }}" required>
             <x-input-error :messages="$errors->get('stock')" class="mt-2" />
         </div>
-
-        @if(isset($logistica))
-            <button type="submit" class="btn btn-primary">Actualizar</button>
-        @else
-            <button type="submit" class="btn btn-primary">Añadir</button>
-        @endif
+        <div style="display: flex; justify-content: flex-start; gap: 10px;">
+            <button type="submit" class="btn btn-primary">{{ isset($logistica) ? 'Actualizar' : 'Añadir' }}</button>
+            <a href="{{ route('admin.productos.index') }}" class="btn btn-secondary">Cancelar</a>
+        </div>
     </form>
 
     @if(isset($logistica))
         <!-- Formulario para eliminar -->
-        <form action="{{ route('admin.logistica.destroy', $logistica->Id_Logistica) }}" method="POST" class="mt-4">
+        <form action="{{ route('admin.logistica.destroy', $logistica->Id_Logistica) }}" method="POST" class="mt-3">
             @csrf
             @method('DELETE')
             <button type="submit" class="btn btn-danger">Eliminar</button>
         </form>
     @endif
-    <div class="mt-3">
-        <a href="{{ route('admin.productos.index') }}" class="btn btn-secondary">Cancelar</a>
-    </div>
-
 </div>
 @endsection
-
