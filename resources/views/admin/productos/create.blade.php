@@ -94,4 +94,4 @@
         stockSection.style.display = this.checked ? 'block' : 'none';
     });
 </script>
-@endsection
+@endsection 
