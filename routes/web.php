@@ -10,7 +10,9 @@ use App\Http\Controllers\ComentarioController;
 use App\Http\Controllers\BoletaController;
 use App\Http\Controllers\AdminController;
 use App\Http\Controllers\AlmacenController;
+use App\Http\Controllers\GestoruserController;
 use App\Http\Controllers\LogisticaController;
+
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', [ProductoController::class, 'inicio'])->name('home');
@@ -53,9 +55,16 @@ Route::middleware('auth')->group(function () {
     Route::resource('/admin/pedidos', PedidoController::class, ['as' => 'admin']);
     Route::resource('/admin/almacenes', AlmacenController::class, ['as' => 'admin']);
     Route::resource('/admin/logistica', LogisticaController::class, ['as' => 'admin']);
+    Route::resource('/admin/gestorUsers', GestoruserController::class, ['as' => 'admin']);
     Route::post('/admin/logistica/search', [LogisticaController::class, 'search'])->name('admin.logistica.search');
     Route::post('/admin/logistica/get-stock', [LogisticaController::class, 'getStockByAlmacen'])->name('admin.logistica.getStockByAlmacen');
+    Route::get('/admin/pedidos', [PedidoController::class, 'adminIndex'])->name('admin.pedidos.index');
+    Route::get('admin/pedidos/{numero_pedido}/{numero_envio}', [PedidoController::class, 'show'])->name('admin.pedidos.show');
+
+    Route::patch('admin/pedidos/updatePedido/{numeroPedido}', [PedidoController::class, 'updatePedido'])->name('admin.pedidos.updatePedido');
+    Route::patch('admin/pedidos/updateEnvio/{numeroEnvio}', [PedidoController::class, 'updateEnvio'])->name('admin.pedidos.updateEnvio');
     
+
     // Rutas de perfil
     Route::get('/profile/edit', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::put('/profile', [ProfileController::class, 'update'])->name('profile.update');
