@@ -5,11 +5,13 @@
 
 <div class="container">
     <h1>Gestión de Almacenes</h1>
-    <a href="{{ route('admin.almacenes.create') }}" class="btn btn-primary mb-3">Añadir Nuevo Almacén</a>
+    
     @if (session('success'))
     <div class="alert alert-success">
         {{ session('success') }}
     </div>
+    
+    <a href="{{ route('admin.almacenes.create') }}" class="btn btn-primary mb-3">Añadir Nuevo Almacén</a>
     @endif
     <div class="table-responsive">
         <table class="table">

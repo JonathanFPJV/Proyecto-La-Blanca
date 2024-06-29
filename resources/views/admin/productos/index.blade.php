@@ -5,9 +5,23 @@
 
 <div class="container">
     <h1>Productos</h1>
+
+    @if(session('success'))
+        <div class="alert alert-success">
+            {{ session('success') }}
+        </div>
+    @endif
+
+    @if(session('error'))
+        <div class="alert alert-danger">
+            {{ session('error') }}
+        </div>
+    @endif
+
     <a href="{{ route('admin.productos.create') }}" class="btn btn-primary mb-3">Agregar Nuevo Producto</a>
     <a href="{{ route('admin.logistica.create') }}" class="btn btn-primary mb-3">Gestión Logística</a>
 
+    <!-- Tabla para mostrar la lista de productos -->
     <div class="overflow-x-auto">
         <table class="table">
             <thead>
@@ -47,4 +61,4 @@
         </table>
     </div>
 </div>
-@endsection 
+@endsection

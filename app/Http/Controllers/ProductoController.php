@@ -19,7 +19,8 @@ class ProductoController extends Controller
         return view('home', compact('productos', 'categorias'));
     }
 
-    public function index() {
+    public function index()
+    {
         $productos = Producto::with(['logistica.almacen', 'categoria'])->get();
         return view('admin.productos.index', compact('productos'));
     }
@@ -81,7 +82,7 @@ class ProductoController extends Controller
     {
         $almacenes = Almacen::all();
         $categorias = Categoria::all();
-        return view('admin.productos.create', compact('almacenes','categorias'));
+        return view('admin.productos.create', compact('almacenes', 'categorias'));
     }
 
     public function store(Request $request)
@@ -99,7 +100,10 @@ class ProductoController extends Controller
             'image_2' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
             'image_3' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
             'image_4' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
-            
+
+        ], [
+
+            'Codigo_producto.unique' => 'El código del producto ya existe.',
         ]);
 
         // Verificar si el código del producto ya existe
@@ -114,7 +118,7 @@ class ProductoController extends Controller
                 'stock' => 'required|integer',
             ]);
         }
-        
+
         $folder = 'productos/' . $request->Codigo_producto;
 
         $data = $request->all();
@@ -138,8 +142,8 @@ class ProductoController extends Controller
         // Crear el producto
         $producto = Producto::create($data);
 
-         // Si se seleccionó la opción de añadir stock y almacén
-         if ($request->has('add_stock')) {
+        // Si se seleccionó la opción de añadir stock y almacén
+        if ($request->has('add_stock')) {
             Logistica::create([
                 'Id_usuario' => Auth::id(),
                 'Id_Producto' => $producto->Id_Producto,
@@ -160,8 +164,11 @@ class ProductoController extends Controller
 
     public function update(Request $request, $id)
     {
+        $producto = Producto::findOrFail($id);
+
+        // Validación, incluyendo la regla 'unique' para el campo 'Codigo_producto'
         $request->validate([
-            'Codigo_producto' => 'required|string|max:255',
+            'Codigo_producto' => 'required|string|max:255|unique:productos,Codigo_producto,' . $producto->Id_Producto . ',Id_Producto',
             'Nombre_producto' => 'required|string|max:255',
             'Descripcion' => 'required|string',
             'Precio' => 'required|numeric',
@@ -173,50 +180,50 @@ class ProductoController extends Controller
             'image_2' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
             'image_3' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
             'image_4' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
+        ], [
+            'Codigo_producto.unique' => 'El código del producto ya existe. Por favor, utilice un código diferente.', // Mensaje de error para el campo 'Codigo_producto'
         ]);
 
-        $producto = Producto::findOrFail($id);
-
-        $folder = 'productos/' . $producto->Codigo_producto;
-
-        $data = $request->all();
+        // Preparación de los datos para la actualización
+        $data = $request->except(['_token', '_method']);
         if ($request->hasFile('imagen')) {
-            // Borrar la imagen anterior si existe
             if ($producto->imagen) {
                 Storage::disk('public')->delete($producto->imagen);
             }
-            $data['imagen'] = $request->file('imagen')->store($folder, 'public');
+            $data['imagen'] = $request->file('imagen')->store('productos', 'public');
         }
         if ($request->hasFile('image_1')) {
             if ($producto->image_1) {
                 Storage::disk('public')->delete($producto->image_1);
             }
-            $data['image_1'] = $request->file('image_1')->store($folder, 'public');
+            $data['image_1'] = $request->file('image_1')->store('productos', 'public');
         }
         if ($request->hasFile('image_2')) {
             if ($producto->image_2) {
                 Storage::disk('public')->delete($producto->image_2);
             }
-            $data['image_2'] = $request->file('image_2')->store($folder, 'public');
+            $data['image_2'] = $request->file('image_2')->store('productos', 'public');
         }
         if ($request->hasFile('image_3')) {
             if ($producto->image_3) {
                 Storage::disk('public')->delete($producto->image_3);
             }
-            $data['image_3'] = $request->file('image_3')->store($folder, 'public');
+            $data['image_3'] = $request->file('image_3')->store('productos', 'public');
         }
         if ($request->hasFile('image_4')) {
             if ($producto->image_4) {
                 Storage::disk('public')->delete($producto->image_4);
             }
-            $data['image_4'] = $request->file('image_4')->store($folder, 'public');
+            $data['image_4'] = $request->file('image_4')->store('productos', 'public');
         }
 
+        // Actualizar el producto
         $producto->update($data);
 
-        // Actualizar el registro de logística
+        // Redireccionar a la lista de productos con mensaje de éxito
         return redirect()->route('admin.productos.index')->with('success', 'Producto actualizado con éxito');
     }
+
 
 
     public function destroy($id)
@@ -254,7 +261,4 @@ class ProductoController extends Controller
 
         return redirect()->route('admin.productos.index')->with('success', 'Producto eliminado con éxito');
     }
-
-
 }
-

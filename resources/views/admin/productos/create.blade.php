@@ -5,6 +5,23 @@
 
 <div class="container">
     <h1>Crear Producto</h1>
+
+    @if(session('success'))
+        <div class="alert alert-success">
+            {{ session('success') }}
+        </div>
+    @endif
+
+    @if ($errors->any())
+        <div class="alert alert-danger">
+            <ul>
+                @foreach ($errors->all() as $error)
+                    <li>{{ $error }}</li>
+                @endforeach
+            </ul>
+        </div>
+    @endif
+    
     <form action="{{ route('admin.productos.store') }}" method="POST" enctype="multipart/form-data">
         @csrf
         <div class="form-group">
