@@ -27,7 +27,24 @@ class ProductoController extends Controller
     public function show($id)
     {
         $producto = Producto::findOrFail($id);
-        return view('producto', compact('producto'));
+        $recomendaciones = Producto::inRandomOrder()->take(4)->get(); // Número de productos que saldrá en las recomendaciones
+    
+        // Obtener el historial de productos vistos por el usuario desde la sesión
+        $historial = session()->get('historial_productos', []);
+    
+        // Agregar el producto actual al inicio del historial (LIFO)
+        array_unshift($historial, $producto->Id_Producto);
+    
+        // Limitar el historial a los últimos 5 productos
+        $historial = array_slice($historial, 0, 5);
+    
+        // Guardar el historial en la sesión
+        session()->put('historial_productos', $historial);
+    
+        // Obtener los detalles de los productos en el historial
+        $productos_historial = Producto::whereIn('Id_Producto', $historial)->get();
+    
+        return view('producto', compact('producto', 'recomendaciones', 'productos_historial'));
     }
 
     public function polos()

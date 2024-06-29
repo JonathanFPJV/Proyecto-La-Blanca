@@ -3,30 +3,30 @@
     <div class="container">
         <div class="footer-sections">
             <div class="footer-section">
-                <h5>Ayuda</h5>
+                <h5>AYUDA</h5>
                 <ul>
                     <li><a href="#">Contáctanos</a></li>
                     <li><a href="#">Preguntas Frecuentes</a></li>
                 </ul>
             </div>
             <div class="footer-section">
-                <h5>Enlaces Rápidos</h5>
+                <h5>ENLACES</h5>
                 <ul>
                     <li><a href="#">Ofertas y Promociones</a></li>
                     <li><a href="#">Guía de Tallas</a></li>
                 </ul>
             </div>
             <div class="footer-section">
-                <h5>Sobre Nosotros</h5>
+                <h5>SOBRE NOSOTROS</h5>
                 <ul>
                     <li><a href="#">Nuestra Historia</a></li>
                     <li><a href="#">Telas y Materiales</a></li>
                 </ul>
             </div>
             <div class="footer-section">
-                <h5>Síguenos</h5>
+                <h5>SIGUENOS</h5>
                 <ul class="footer-social">
-                    <li><a href="#"><i class="fab fa-facebook-f"></i> Facebook</a></li>
+                    <li><a href="https://www.facebook.com/profile.php?id=61561465958030"><i class="fab fa-facebook-f"></i> Facebook</a></li>
                     <li><a href="#"><i class="fab fa-instagram"></i> Instagram</a></li>
                 </ul>
             </div>
