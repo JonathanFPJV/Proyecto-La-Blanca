@@ -203,35 +203,36 @@ class ProductoController extends Controller
 
         // Preparación de los datos para la actualización
         $data = $request->except(['_token', '_method']);
+        $folder = 'productos/' . $producto->Codigo_producto;
         if ($request->hasFile('imagen')) {
             if ($producto->imagen) {
                 Storage::disk('public')->delete($producto->imagen);
             }
-            $data['imagen'] = $request->file('imagen')->store('productos', 'public');
+            $data['imagen'] = $request->file('imagen')->store($folder, 'public');
         }
         if ($request->hasFile('image_1')) {
             if ($producto->image_1) {
                 Storage::disk('public')->delete($producto->image_1);
             }
-            $data['image_1'] = $request->file('image_1')->store('productos', 'public');
+            $data['image_1'] = $request->file('image_1')->store($folder, 'public');
         }
         if ($request->hasFile('image_2')) {
             if ($producto->image_2) {
                 Storage::disk('public')->delete($producto->image_2);
             }
-            $data['image_2'] = $request->file('image_2')->store('productos', 'public');
+            $data['image_2'] = $request->file('image_2')->store($folder, 'public');
         }
         if ($request->hasFile('image_3')) {
             if ($producto->image_3) {
                 Storage::disk('public')->delete($producto->image_3);
             }
-            $data['image_3'] = $request->file('image_3')->store('productos', 'public');
+            $data['image_3'] = $request->file('image_3')->store($folder, 'public');
         }
         if ($request->hasFile('image_4')) {
             if ($producto->image_4) {
                 Storage::disk('public')->delete($producto->image_4);
             }
-            $data['image_4'] = $request->file('image_4')->store('productos', 'public');
+            $data['image_4'] = $request->file('image_4')->store($folder, 'public');
         }
 
         // Actualizar el producto
