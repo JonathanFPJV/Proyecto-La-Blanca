@@ -1,6 +1,8 @@
-@extends('layouts.app')
+@extends('layouts.admin')
 
 @section('content')
+<link rel="stylesheet" href="{{ asset('css/gestorUser/styles_ge.css') }}">
+
 <div class="container">
     <h1>Gestión de Usuarios</h1>
     @if (session('success'))
@@ -8,11 +10,15 @@
             {{ session('success') }}
         </div>
     @endif
-    <a href="{{ route('admin.gestorUsers.create') }}" class="btn btn-primary mb-3">Crear Usuario</a>
 
-    <!-- Filtro por Tipo de Usuario -->
-    <form action="{{ route('admin.gestorUsers.index') }}" method="GET" class="mb-3">
-        <div class="row">
+    <!-- Botón Crear Usuario con espaciado adicional después -->
+    <div style="margin-bottom: 20px;">
+        <a href="{{ route('admin.gestorUsers.create') }}" class="btn btn-primary">Crear Usuario</a>
+    </div>
+
+    <!-- Filtro por Tipo de Usuario con espaciado propio para no estar pegado al botón -->
+    <form action="{{ route('admin.gestorUsers.index') }}" method="GET" style="margin-bottom: 40px;"> <!-- Aumenta también aquí si es necesario -->
+        <div class="form-group row">
             <div class="col-md-4">
                 <select name="ID_Tipo" class="form-control">
                     <option value="">Todos los Tipos de Usuario</option>
@@ -29,6 +35,7 @@
         </div>
     </form>
 
+    <!-- Tabla de usuarios con adecuada separación de elementos -->
     <table class="table table-bordered">
         <thead>
             <tr>
@@ -52,9 +59,9 @@
                     <td>{{ $user->direccion }}</td>
                     <td>{{ $user->telefono }}</td>
                     <td>{{ $user->tipoUsuario ? $user->tipoUsuario->Nombre_tipo : 'Sin Tipo' }}</td>
-                    <td>
+                    <td class="table-actions">
                         <a href="{{ route('admin.gestorUsers.edit', $user->id) }}" class="btn btn-warning">Editar</a>
-                        <form action="{{ route('admin.gestorUsers.destroy', $user->id) }}" method="POST" style="display:inline-block;">
+                        <form action="{{ route('admin.gestorUsers.destroy', $user->id) }}" method="POST" style="display:inline-flex;">
                             @csrf
                             @method('DELETE')
                             <button type="submit" class="btn btn-danger" onclick="return confirm('¿Estás seguro de eliminar este usuario?')">Eliminar</button>
@@ -66,5 +73,3 @@
     </table>
 </div>
 @endsection
-
-

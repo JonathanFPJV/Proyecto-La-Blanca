@@ -22,7 +22,7 @@ h1 {
 
 /* Form Styles */
 .form-group {
-    margin-bottom: 15px;
+    margin-bottom: 15px; /* Espacio entre grupos de formularios para claridad */
 }
 
 label {
@@ -33,14 +33,13 @@ label {
 
 input[type="text"],
 input[type="number"],
-input[type="file"],
 textarea,
 select {
     width: 100%;
     padding: 10px;
     border: 1px solid #ddd;
     border-radius: 4px;
-    box-sizing: border-box; /* Makes sure padding doesn't affect width */
+    box-sizing: border-box; /* Asegura que el padding no afecte el ancho */
 }
 
 input[type="text"]:focus,
@@ -57,17 +56,18 @@ select:focus {
     border: none;
     border-radius: 5px;
     cursor: pointer;
-    font-size: 12px;
+    font-size: 13px;
     text-transform: uppercase;
-    margin-right: 5px; /* Consistent spacing between buttons */
-}
-
-.btn:last-child {
-    margin-right: 0; /* No margin for the last button to align properly */
+    margin-right: 5px;
 }
 
 .btn-primary {
     background-color: #007bff;
+    color: white;
+}
+
+.btn-secondary {
+    background-color: #6c757d;
     color: white;
 }
 
@@ -81,13 +81,16 @@ select:focus {
     color: white;
 }
 
-.btn-secondary {
-    background-color: #6c757d;
-    color: white;
+.btn:hover {
+    opacity: 0.8;
 }
 
-.btn:hover {
-    opacity: 0.9; /* Slightly reducing opacity for hover instead of changing background */
+/* Actions layout with considerable vertical separation */
+.actions {
+    display: flex;
+    justify-content: start; /* Alinea los botones al inicio */
+    gap: 10px; /* Espacio entre botones */
+    margin-top: 15px; /* Espacio considerable entre campos y botones */
 }
 
 /* Table Styles */
@@ -102,6 +105,7 @@ select:focus {
     padding: 12px;
     border: 1px solid #ddd;
     text-align: left;
+    vertical-align: middle;
 }
 
 .table th {
@@ -143,10 +147,4 @@ select:focus {
     border: none;
     background: none;
     font-size: 1.5rem;
-}
-
-/* Image Styles */
-.img-thumbnail {
-    max-width: 200px;
-    border-radius: 4px;
 }

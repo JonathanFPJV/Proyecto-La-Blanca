@@ -1,6 +1,8 @@
-@extends('layouts.app')
+@extends('layouts.admin')
 
 @section('content')
+<link rel="stylesheet" href="{{ asset('css/gestorUser/styles_ge.css') }}">
+
 <div class="container">
     <h1>Crear Usuario</h1>
     <form action="{{ route('admin.gestorUsers.store') }}" method="POST">
@@ -29,7 +31,6 @@
             <label for="password_confirmation">Confirmar Contraseña</label>
             <input type="password" class="form-control" id="password_confirmation" name="password_confirmation" required>
         </div>
-        
         <div class="form-group">
             <label for="direccion">Dirección</label>
             <input type="text" class="form-control" id="direccion" name="direccion" required>

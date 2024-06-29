@@ -1,6 +1,8 @@
-@extends('layouts.app')
+@extends('layouts.admin')
 
 @section('content')
+<link rel="stylesheet" href="{{ asset('css/pedidos/styles_pd.css') }}">
+
 <div class="container">
     <h1>Detalle del Pedido y Envío</h1>
 
@@ -76,4 +78,3 @@
     <a href="{{ route('admin.pedidos.index') }}" class="btn btn-secondary">Volver a la lista</a>
 </div>
 @endsection
-
