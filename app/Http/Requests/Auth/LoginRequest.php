@@ -52,7 +52,7 @@ class LoginRequest extends FormRequest
             $this->throwFailedAuthenticationException();
         }
 
-        rateLimiter()->clear($this->throttleKey());
+        RateLimiter::clear($this->throttleKey());
     }
 
     /**
