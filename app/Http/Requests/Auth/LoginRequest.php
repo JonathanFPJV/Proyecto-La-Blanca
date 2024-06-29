@@ -42,14 +42,17 @@ class LoginRequest extends FormRequest
         $this->ensureIsNotRateLimited();
 
         if (! Auth::attempt($this->only('email', 'password'), $this->boolean('remember'))) {
-            RateLimiter::hit($this->throttleKey());
-
-            throw ValidationException::withMessages([
-                'email' => trans('auth.failed'),
-            ]);
+            Auth::logoutOtherDevices($this->password); // Ensure the user is logged out from other devices
+            $this->throwFailedAuthenticationException();
         }
 
-        RateLimiter::clear($this->throttleKey());
+        $user = Auth::user();
+        if ($user->estado !== 'activo') {
+            Auth::logout();
+            $this->throwFailedAuthenticationException();
+        }
+
+        rateLimiter()->clear($this->throttleKey());
     }
 
     /**
@@ -72,6 +75,13 @@ class LoginRequest extends FormRequest
                 'seconds' => $seconds,
                 'minutes' => ceil($seconds / 60),
             ]),
+        ]);
+    }
+
+    protected function throwFailedAuthenticationException()
+    {
+        throw ValidationException::withMessages([
+            'email' => __('auth.failed'),
         ]);
     }
 
