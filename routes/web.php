@@ -15,6 +15,7 @@ use App\Http\Controllers\LogisticaController;
 
 use Illuminate\Support\Facades\Route;
 
+// Rutas de productos y categorías
 Route::get('/', [ProductoController::class, 'inicio'])->name('home');
 Route::get('/productos', [ProductoController::class, 'inicio'])->name('productos.index');
 Route::get('/productos/{id}', [ProductoController::class, 'show'])->name('productos.show');
@@ -26,29 +27,35 @@ Route::get('/poleras', [ProductoController::class, 'poleras'])->name('poleras');
 Route::get('/zapatillas', [ProductoController::class, 'zapatillas'])->name('zapatillas');
 Route::get('/medias', [ProductoController::class, 'medias'])->name('medias');
 
+// Rutas para el carrito de compras
 Route::get('/carrito', [CarritoController::class, 'index'])->name('carrito.index');
 Route::post('/carrito/add/{id}', [CarritoController::class, 'add'])->name('carrito.add');
 Route::delete('/carrito/remove/{id}', [CarritoController::class, 'remove'])->name('carrito.remove');
 Route::get('/checkout', [CarritoController::class, 'checkout'])->name('checkout');
 Route::post('/checkout', [CarritoController::class, 'processCheckout'])->name('processCheckout');
 
+// Rutas para favoritos
 Route::get('/favoritos', [FavoritoController::class, 'index'])->name('favoritos.index');
-Route::post('/favoritos', [FavoritoController::class, 'store'])->name('favoritos.store');
-Route::delete('/favoritos/{id}', [FavoritoController::class, 'destroy'])->name('favoritos.destroy');
+Route::post('/favoritos/add/{id}', [FavoritoController::class, 'add'])->name('favoritos.add');
+Route::delete('/favoritos/remove/{id}', [FavoritoController::class, 'remove'])->name('favoritos.remove');
 
+// Rutas de pedidos
 Route::get('/pedidos', [PedidoController::class, 'indice'])->name('pedidos.index');
 Route::get('/pedidos/{id}', [PedidoController::class, 'show'])->name('pedidos.show');
 Route::post('/pedidos', [PedidoController::class, 'store'])->name('pedidos.store');
 
+// Rutas de comentarios
 Route::get('/comentarios', [ComentarioController::class, 'index'])->name('comentarios.index');
 Route::post('/comentarios', [ComentarioController::class, 'store'])->name('comentarios.store');
 Route::get('/comentarios/{id}/edit', [ComentarioController::class, 'edit'])->name('comentarios.edit');
 Route::patch('/comentarios/{id}', [ComentarioController::class, 'update'])->name('comentarios.update');
 Route::delete('/comentarios/{id}', [ComentarioController::class, 'destroy'])->name('comentarios.destroy');
 
+// Rutas de boletas
 Route::get('/boletas', [BoletaController::class, 'index'])->name('boletas.index');
 Route::get('/boletas/{id}', [BoletaController::class, 'show'])->name('boletas.show');
 
+// Rutas de administración (requieren autenticación)
 Route::middleware('auth')->group(function () {
     Route::get('/admin', [AdminController::class, 'index'])->name('admin.dashboard');
     Route::resource('/admin/productos', ProductoController::class, ['as' => 'admin']);
@@ -60,10 +67,8 @@ Route::middleware('auth')->group(function () {
     Route::post('/admin/logistica/get-stock', [LogisticaController::class, 'getStockByAlmacen'])->name('admin.logistica.getStockByAlmacen');
     Route::get('/admin/pedidos', [PedidoController::class, 'adminIndex'])->name('admin.pedidos.index');
     Route::get('admin/pedidos/{numero_pedido}/{numero_envio}', [PedidoController::class, 'show'])->name('admin.pedidos.show');
-
     Route::patch('admin/pedidos/updatePedido/{numeroPedido}', [PedidoController::class, 'updatePedido'])->name('admin.pedidos.updatePedido');
     Route::patch('admin/pedidos/updateEnvio/{numeroEnvio}', [PedidoController::class, 'updateEnvio'])->name('admin.pedidos.updateEnvio');
-    
 
     // Rutas de perfil
     Route::get('/profile/edit', [ProfileController::class, 'edit'])->name('profile.edit');
@@ -76,5 +81,6 @@ Route::get('auth/google', [GoogleController::class, 'redirectToGoogle'])->name('
 Route::get('auth/google/callback', [GoogleController::class, 'handleGoogleCallback']);
 
 require __DIR__.'/auth.php';
+
 
 
