@@ -67,6 +67,7 @@ class GestoruserController extends Controller
             'direccion' => $request->direccion,
             'telefono' => $request->telefono,
             'ID_Tipo' => $request->ID_Tipo,
+            'estado' => 'activo', 
         ]);
 
         $user->save();
