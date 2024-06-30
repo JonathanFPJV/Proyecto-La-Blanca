@@ -1,7 +1,7 @@
 @extends('layouts.admin')
 
 @section('content')
-<link rel="stylesheet" href="{{ asset('css/productos/styles_p.css') }}">
+<link rel="stylesheet" href="{{ asset('css/adm_productos/styles_p.css') }}">
 
 <div class="container">
     <h1>{{ isset($logistica) ? 'Editar Logística' : 'Añadir Logística' }}</h1>

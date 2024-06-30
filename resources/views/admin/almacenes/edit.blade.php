@@ -1,7 +1,7 @@
 @extends('layouts.admin')
 
 @section('content')
-<link rel="stylesheet" href="{{ asset('css/almacenes/styles_a.css') }}">
+<link rel="stylesheet" href="{{ asset('css/adm_almacenes/styles_a.css') }}">
 
 <div class="container">
     <h1>Editar Almacén</h1>

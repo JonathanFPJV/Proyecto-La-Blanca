@@ -1,7 +1,7 @@
 @extends('layouts.admin')
 
 @section('content')
-<link rel="stylesheet" href="{{ asset('css/gestorUser/styles_ge.css') }}">
+<link rel="stylesheet" href="{{ asset('css/adm_gestorUser/styles_ge.css') }}">
 
 <div class="container">
     <h1>Editar Usuario</h1>

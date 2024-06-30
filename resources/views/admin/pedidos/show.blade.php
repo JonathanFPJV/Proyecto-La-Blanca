@@ -1,7 +1,7 @@
 @extends('layouts.admin')
 
 @section('content')
-<link rel="stylesheet" href="{{ asset('css/pedidos/styles_pd.css') }}">
+<link rel="stylesheet" href="{{ asset('css/adm_pedidos/styles_pd.css') }}">
 
 <div class="container">
     <h1>Detalle del Pedido y Envío</h1>
