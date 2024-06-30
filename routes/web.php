@@ -13,6 +13,8 @@ use App\Http\Controllers\AdminController;
 use App\Http\Controllers\AlmacenController;
 use App\Http\Controllers\GestoruserController;
 use App\Http\Controllers\LogisticaController;
+use App\Http\Middleware\EnsureUserIsAdmin;
+use App\Http\Middleware\EnsureUserIsTrabajador;
 
 use Illuminate\Support\Facades\Route;
 
@@ -66,6 +68,15 @@ Route::get('/telas-materiales', [PaginaController::class, 'telasMateriales'])->n
 
 // Rutas de administración (requieren autenticación)
 Route::middleware('auth')->group(function () {
+
+    // Rutas de perfil
+    Route::get('/profile/edit', [ProfileController::class, 'edit'])->name('profile.edit');
+    Route::put('/profile', [ProfileController::class, 'update'])->name('profile.update');
+    Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
+});
+
+// Rutas de administración (requieren autenticación)
+Route::middleware(['auth', 'admin'])->group(function () {
     Route::get('/admin', [AdminController::class, 'index'])->name('admin.dashboard');
     Route::resource('/admin/productos', ProductoController::class, ['as' => 'admin']);
     Route::resource('/admin/pedidos', PedidoController::class, ['as' => 'admin']);
@@ -78,13 +89,12 @@ Route::middleware('auth')->group(function () {
     Route::get('admin/pedidos/{numero_pedido}/{numero_envio}', [PedidoController::class, 'show'])->name('admin.pedidos.show');
     Route::patch('/admin/pedidos/{numeroPedido}/{numeroEnvio}/update-estado', [PedidoController::class, 'updateEstado'])->name('admin.pedidos.updateEstado');
 
-
-    // Rutas de perfil
-    Route::get('/profile/edit', [ProfileController::class, 'edit'])->name('profile.edit');
-    Route::put('/profile', [ProfileController::class, 'update'])->name('profile.update');
-    Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 });
 
+Route::middleware(['auth', 'trabajador'])->group(function () {
+    
+    // Otras rutas para trabajadores
+});
 // Rutas de autenticación con Google
 Route::get('auth/google', [GoogleController::class, 'redirectToGoogle'])->name('auth.google');
 Route::get('auth/google/callback', [GoogleController::class, 'handleGoogleCallback']);
