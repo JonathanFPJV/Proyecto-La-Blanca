@@ -67,8 +67,8 @@ Route::middleware('auth')->group(function () {
     Route::post('/admin/logistica/get-stock', [LogisticaController::class, 'getStockByAlmacen'])->name('admin.logistica.getStockByAlmacen');
     Route::get('/admin/pedidos', [PedidoController::class, 'adminIndex'])->name('admin.pedidos.index');
     Route::get('admin/pedidos/{numero_pedido}/{numero_envio}', [PedidoController::class, 'show'])->name('admin.pedidos.show');
-    Route::patch('admin/pedidos/updatePedido/{numeroPedido}', [PedidoController::class, 'updatePedido'])->name('admin.pedidos.updatePedido');
-    Route::patch('admin/pedidos/updateEnvio/{numeroEnvio}', [PedidoController::class, 'updateEnvio'])->name('admin.pedidos.updateEnvio');
+    Route::patch('/admin/pedidos/{numeroPedido}/{numeroEnvio}/update-estado', [PedidoController::class, 'updateEstado'])->name('admin.pedidos.updateEstado');
+
 
     // Rutas de perfil
     Route::get('/profile/edit', [ProfileController::class, 'edit'])->name('profile.edit');

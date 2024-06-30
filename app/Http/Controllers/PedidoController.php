@@ -69,40 +69,28 @@ class PedidoController extends Controller
 
     
     // funciones para cambiar el esado de pedido y envio
-    public function updatePedido(Request $request, $numeroPedido)
+    public function updateEstado(Request $request, $numeroPedido, $numeroEnvio)
     {
         $request->validate([
             'estado_pedido' => 'required|string|max:255',
-        ]);
-
-        $pedido = Pedido::where('n_Pedido', $numeroPedido)->firstOrFail();
-        $pedido->estado = $request->estado_pedido;
-        $pedido->save();
-
-        return redirect()->route('admin.pedidos.show')->with('success', 'Estado del pedido actualizado con éxito.');
-    }
-
-    public function updateEnvio(Request $request, $numeroEnvio)
-    {
-        $request->validate([
             'estado_envio' => 'required|string|max:255',
         ]);
 
-        $envio = Envio::where('n_envio', $numeroEnvio)->firstOrFail();
+        $pedido = Pedido::where('n_Pedido', $numeroPedido)->first();
+        if (!$pedido) {
+            return redirect()->route('admin.pedidos.index')->with('error', 'Pedido no encontrado.');
+        }
+        $pedido->estado = $request->estado_pedido;
+        $pedido->save();
+
+        $envio = Envio::where('n_envio', $numeroEnvio)->first();
+        if (!$envio) {
+            return redirect()->route('admin.pedidos.index')->with('error', 'Envío no encontrado.');
+        }
         $envio->Estado = $request->estado_envio;
         $envio->save();
 
-        return redirect()->route('admin.pedidos.show')->with('success', 'Estado del envío actualizado con éxito.');
-    }
-
-
-    public function updateStatus(Request $request, $id)
-    {
-        $pedido = Pedido::findOrFail($id);
-        $pedido->Estado = $request->Estado;
-        $pedido->save();
-
-        return redirect()->route('admin.pedidos')->with('success', 'Estado del pedido actualizado con éxito');
+        return redirect()->route('admin.pedidos.show', ['numero_pedido' => $numeroPedido, 'numero_envio' => $numeroEnvio])->with('success', 'Estados actualizados con éxito.');
     }
 
     public function destroy($id)
