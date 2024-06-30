@@ -7,12 +7,22 @@ use App\Models\Producto;
 use App\Models\Pedido;
 use App\Models\Almacen;
 use PDF;
+use App\Http\Controllers\ChartController;
 
 class AdminController extends Controller
 {
-    public function index()
+    public function index(Request $request, ChartController $chartController)
     {
-        return view('admin.dashboard');
+        $almacenId = $request->input('almacen_id');
+        $productosVendidosChart = $chartController->createProductosVendidosChart();
+        $stockPorAlmacenChart = $chartController->createStockPorAlmacenChart($almacenId);
+        $almacenes = Almacen::all();
+
+        return view('admin.dashboard', [
+            'productosVendidosChart' => $productosVendidosChart,
+            'stockPorAlmacenChart' => $stockPorAlmacenChart,
+            'almacenes' => $almacenes,
+        ]);
     }
 
     public function productos()

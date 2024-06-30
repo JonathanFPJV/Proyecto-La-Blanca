@@ -15,7 +15,7 @@ use App\Http\Controllers\GestoruserController;
 use App\Http\Controllers\LogisticaController;
 use App\Http\Middleware\EnsureUserIsAdmin;
 use App\Http\Middleware\EnsureUserIsTrabajador;
-
+use App\Http\Controllers\ChartController;
 use Illuminate\Support\Facades\Route;
 
 // Rutas de productos y categorías
@@ -89,6 +89,7 @@ Route::middleware(['auth', 'admin'])->group(function () {
     Route::get('admin/pedidos/{numero_pedido}/{numero_envio}', [PedidoController::class, 'show'])->name('admin.pedidos.show');
     Route::patch('/admin/pedidos/{numeroPedido}/{numeroEnvio}/update-estado', [PedidoController::class, 'updateEstado'])->name('admin.pedidos.updateEstado');
 
+    
 });
 
 Route::middleware(['auth', 'trabajador'])->group(function () {
