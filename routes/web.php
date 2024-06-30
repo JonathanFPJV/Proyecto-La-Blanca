@@ -8,6 +8,7 @@ use App\Http\Controllers\FavoritoController;
 use App\Http\Controllers\PedidoController;
 use App\Http\Controllers\ComentarioController;
 use App\Http\Controllers\BoletaController;
+use App\Http\Controllers\PaginaController;
 use App\Http\Controllers\AdminController;
 use App\Http\Controllers\AlmacenController;
 use App\Http\Controllers\GestoruserController;
@@ -54,6 +55,14 @@ Route::delete('/comentarios/{id}', [ComentarioController::class, 'destroy'])->na
 // Rutas de boletas
 Route::get('/boletas', [BoletaController::class, 'index'])->name('boletas.index');
 Route::get('/boletas/{id}', [BoletaController::class, 'show'])->name('boletas.show');
+
+// Rutas del pie de página
+Route::get('/contactanos', [PaginaController::class, 'contactanos'])->name('contactanos');
+Route::get('/preguntas-frecuentes', [PaginaController::class, 'preguntasFrecuentes'])->name('preguntasFrecuentes');
+Route::get('/ofertas-promociones', [PaginaController::class, 'ofertasPromociones'])->name('ofertasPromociones');
+Route::get('/guia-tallas', [PaginaController::class, 'guiaTallas'])->name('guiaTallas');
+Route::get('/nuestra-historia', [PaginaController::class, 'nuestraHistoria'])->name('nuestraHistoria');
+Route::get('/telas-materiales', [PaginaController::class, 'telasMateriales'])->name('telasMateriales');
 
 // Rutas de administración (requieren autenticación)
 Route::middleware('auth')->group(function () {

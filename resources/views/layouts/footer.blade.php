@@ -1,26 +1,26 @@
 <footer class="footer">
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
     <div class="container">
         <div class="footer-sections">
             <div class="footer-section">
                 <h5>AYUDA</h5>
                 <ul>
-                    <li><a href="#">Contáctanos</a></li>
-                    <li><a href="#">Preguntas Frecuentes</a></li>
+                    <li><a href="{{ route('contactanos') }}">Contáctanos</a></li>
+                    <li><a href="{{ route('preguntasFrecuentes') }}">Preguntas Frecuentes</a></li>
                 </ul>
             </div>
             <div class="footer-section">
                 <h5>ENLACES</h5>
                 <ul>
-                    <li><a href="#">Ofertas y Promociones</a></li>
-                    <li><a href="#">Guía de Tallas</a></li>
+                    <li><a href="{{ route('ofertasPromociones') }}">Ofertas y Promociones</a></li>
+                    <li><a href="{{ route('guiaTallas') }}">Guía de Tallas</a></li>
                 </ul>
             </div>
             <div class="footer-section">
                 <h5>SOBRE NOSOTROS</h5>
                 <ul>
-                    <li><a href="#">Nuestra Historia</a></li>
-                    <li><a href="#">Telas y Materiales</a></li>
+                    <li><a href="{{ route('nuestraHistoria') }}">Nuestra Historia</a></li>
+                    <li><a href="{{ route('telasMateriales') }}">Telas y Materiales</a></li>
                 </ul>
             </div>
             <div class="footer-section">

@@ -3,7 +3,7 @@
 @section('content')
 <div class="container-fluid p-0">
     <div class="w-100">
-        <img src="{{ asset('images/medias.jpg') }}" class="img-fluid" alt="Full Width Image">
+        <img src="{{ asset('images/medias.png') }}" class="img-fluid" alt="Full Width Image">
     </div>
     <div class="container mt-5">
         <div class="row">

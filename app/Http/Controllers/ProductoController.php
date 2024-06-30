@@ -16,9 +16,10 @@ class ProductoController extends Controller
     {
         $productos = Producto::all();
         $categorias = Categoria::all();
-        return view('home', compact('productos', 'categorias'));
+        $recomendaciones = Producto::inRandomOrder()->take(4)->get(); // Productos recomendados de manera aleatoria
+        return view('home', compact('productos', 'categorias', 'recomendaciones'));
     }
-
+    
     public function index()
     {
         $productos = Producto::with(['logistica.almacen', 'categoria'])->get();
