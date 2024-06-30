@@ -30,13 +30,33 @@ class RegisteredUserController extends Controller
     public function store(Request $request): RedirectResponse
     {
         $request->validate([
-            'name' => ['required', 'string', 'max:255'],
+            'name' => ['required', 'regex:/^[a-zA-Z\s]+$/'],
             'email' => ['required', 'string', 'lowercase', 'email', 'max:255', 'unique:'.User::class],
-            'apellido' => ['required', 'string', 'max:255'],
+            'apellido' => ['required', 'regex:/^[a-zA-Z\s]+$/'],
             'nombreusuario' => ['required', 'string', 'max:255', 'unique:' . User::class],
             'direccion' => ['required', 'string', 'max:255'],
-            'telefono' => ['required', 'string', 'max:15'],
-            'password' => ['required', 'confirmed', Rules\Password::defaults()],
+            'telefono' => ['required', 'string', 'digits:9', 'unique:' . User::class],
+            'password' => ['required', 'confirmed', Rules\Password::min(8)],
+        ],[
+
+            'name.regex' => 'El nombre solo debe contener letras.',
+            'apellido.regex' => 'El apellido solo debe contener letras.',
+            'nombreusuario.alpha_dash' => 'El nombre de usuario solo puede incluir letras, números, guiones y guiones bajos.',
+            'name.required' => 'El nombre es obligatorio.',
+            'apellido.required' => 'El apellido es obligatorio.',
+            'nombreusuario.required' => 'El nombre de usuario es obligatorio.',
+            'nombreusuario.unique' => 'Este nombre de usuario ya está registrado.',
+            'direccion.required' => 'La dirección es obligatoria.',
+            'telefono.required' => 'El teléfono es obligatorio.',
+            'telefono.unique' => 'Este teléfono ya está registrado.',
+            'telefono.digits' => 'El teléfono debe tener exactamente 9 dígitos.',
+            'email.required' => 'El correo electrónico es obligatorio.',
+            'email.email' => 'El correo electrónico debe ser una dirección válida.',
+            'email.unique' => 'Este correo electrónico ya está registrado.',
+            'password.required' => 'La contraseña es obligatoria.',
+            'password.confirmed' => 'Las contraseñas no coinciden.',
+            'password.min' => 'La contraseña debe tener al menos 8 caracteres.',
+
         ]);
 
         $userType = 3;

@@ -21,9 +21,9 @@ body {
 
 /* Header Style */
 .card h2 {
-    font-size: 24px;
+    font-size: 25px;
     color: #333;
-    margin-bottom: 15px;  /* Espacio después del título */
+    margin-bottom: 25px;  /* Espacio después del título */
     text-align: center;
 }
 
@@ -45,39 +45,41 @@ body {
 
 
 /* Button Style */
-.button, .button-google {
-    padding: 12px 15px;
+.button {
+    padding: 18px 20px;
     border-radius: 30px;
     text-align: center;
     cursor: pointer;
-    width: 40%;  /* Define el ancho de los botones */
+    width: 100%;  /* Define el ancho de los botones */
     margin: 25px auto;  /* Centra los botones horizontalmente y añade espacio vertical */
     display: block;  /* Asegura que los botones se traten como bloques, permitiendo margen auto */
 }
 
 .button {
-    background-color: #ff6347;
+    background-color: #000000;
     color: white;
     border: none;
 }
 
 
 .button:hover {
-    background-color: #ff4500;
+    background-color: #393939;
 }
 
 .button-google {
-    background-color: transparent;  /* Fondo transparente para el botón de Google */
+    background-color: #42f46e; /* Fondo transparente para el botón de Google */
     color: #000000;
+    border-radius: 30px;
+    padding: 10px 15px;
     display: flex;
     align-items: center;
     justify-content: center;
-    text-decoration: underline;  /* Estilo de enlace para parecer un enlace */
+    text-decoration: none;  /* Estilo de enlace para parecer un enlace */
 }
 
 .button-google img {
-    margin-right: 10px;
-    width: 20px;  /* Controla el tamaño del ícono de Google */
+    margin-right: 12px;
+    width: 30px;  /* Controla el tamaño del ícono de Google */
     height: auto;
 }
 
@@ -86,3 +88,23 @@ body {
     margin-top: 20px;  /* Espacio después del último botón */
     width: 100%;
 }
+
+
+/* Estilos para alertas */
+.alert {
+    padding: 1px;
+    width: 98%;
+    margin: 15px 0;
+    border-radius: 5px;
+    color: #fff; /* Texto blanco */
+    text-align: center;
+}
+
+.alert-success {
+    background-color: #4CAF50; /* Verde */
+}
+
+.alert-danger {
+    background-color: #f44336; /* Rojo */
+}
+

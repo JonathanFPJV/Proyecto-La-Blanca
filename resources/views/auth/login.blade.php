@@ -1,22 +1,31 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Iniciar Sesión</title>
     <link href="{{ asset('css/styles_log.css') }}" rel="stylesheet">
 </head>
+
 <body>
     <div class="login-container">
         <div class="login-content">
             <h2>Iniciar Sesión</h2>
             <p class="register-link">¿Es tu primera vez? <a href="{{ route('register') }}">Regístrate</a></p>
+
+            @if ($errors->any())
+            <div class="alert alert-danger">
+                {{ $errors->first('error') }}
+            </div>
+            @endif
+
             <form method="POST" action="{{ route('login') }}" class="form-container">
                 @csrf
 
                 <!-- Email Address -->
                 <div class="input-group">
-                    <input id="email" type="email" name="email" :value="old('email')" required autofocus placeholder="Correo electrónico">
+                    <input id="email" type="email" name="email" value="{{ old('email') }}" required autofocus placeholder="Correo electrónico">
                 </div>
 
                 <!-- Password -->
@@ -27,7 +36,7 @@
                 <!-- Forgot Password -->
                 <p class="forgot-password">
                     @if (Route::has('password.request'))
-                        <a href="{{ route('password.request') }}">Olvidé mi contraseña</a>
+                    <a href="{{ route('password.request') }}">Olvidé mi contraseña</a>
                     @endif
                 </p>
 
@@ -49,5 +58,5 @@
         </div>
     </div>
 </body>
-</html>
 
+</html>
