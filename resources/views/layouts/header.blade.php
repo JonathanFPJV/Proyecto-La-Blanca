@@ -13,13 +13,10 @@
         </div>
     </div>
     <div class="navbar-right">
-        <div class="search-bar">
-            <input type="text" placeholder="Buscar...">
-            <button type="button">Buscar</button>
-        </div>
-        <i class="fas fa-search search-icon"></i>
         <i class="fas fa-user user-icon"></i>
-        <i class="fas fa-shopping-cart cart-icon" onclick="location.href='{{ route('carrito.index') }}'"><span class="cart-count">{{ session('carrito') ? count(session('carrito')) : 0 }}</span></i>
+        <div class="position-relative">
+            <i class="fas fa-shopping-cart cart-icon" onclick="location.href='{{ route('carrito.index') }}'"></i>
+        </div>
         <div class="user-menu">
             <div class="dropdown-menu">
                 @guest
@@ -44,23 +41,14 @@
     document.addEventListener('DOMContentLoaded', function () {
         const userIcon = document.querySelector('.user-icon');
         const dropdownMenu = document.querySelector('.dropdown-menu');
-        const searchIcon = document.querySelector('.search-icon');
-        const searchBar = document.querySelector('.search-bar');
 
         userIcon.addEventListener('click', function () {
             dropdownMenu.classList.toggle('show');
         });
 
-        searchIcon.addEventListener('click', function () {
-            searchBar.classList.toggle('show');
-        });
-
         document.addEventListener('click', function (event) {
             if (!userIcon.contains(event.target) && !dropdownMenu.contains(event.target)) {
                 dropdownMenu.classList.remove('show');
-            }
-            if (!searchIcon.contains(event.target) && !searchBar.contains(event.target)) {
-                searchBar.classList.remove('show');
             }
         });
     });

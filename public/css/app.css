@@ -1,3 +1,17 @@
+@font-face {
+    font-family: 'CustomFont';
+    src: url('/path/to/your/font-file.woff') format('woff'); /* Ajusta el path y el formato según tu archivo de fuente */
+    font-weight: normal;
+    font-style: normal;
+}
+
+/* Apply the custom font and styles to all heading elements */
+h1, h2, h3, h4, h5, h6 {
+    font-family: 'CustomFont', sans-serif; /* Utiliza la fuente definida anteriormente */
+    font-weight: bold; /* Hacer el texto negrita */
+    text-transform: uppercase; /* Transformar el texto a mayúsculas */
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5); /* Añadir sombra al texto */
+}
 /* Estilos generales */
 body, h1, h2, h3, p, ul, ol, li, input, button, a {
     margin: 0;
