@@ -19,9 +19,13 @@ use App\Http\Controllers\ChartController;
 use App\Http\Controllers\ContactController;
 use Illuminate\Support\Facades\Route;
 
+
+
 // Rutas de productos y categorías
 Route::get('/', [ProductoController::class, 'inicio'])->name('home');
 Route::get('/productos', [ProductoController::class, 'inicio'])->name('productos.index');
+Route::get('/productos', [ProductoController::class, 'index'])->name('productos.index');
+Route::get('/productos/filtrar', [ProductoController::class, 'filtrarPorPrecio'])->name('productos.filtrar');
 Route::get('/productos/{id}', [ProductoController::class, 'show'])->name('productos.show');
 
 Route::get('/polos', [ProductoController::class, 'polos'])->name('polos');

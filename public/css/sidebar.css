@@ -1,0 +1,92 @@
+/* Estilos básicos para el sidebar */
+#sidebar {
+    position: fixed;
+    left: 0;
+    top: 0;
+    width: 0; /* Inicialmente oculto */
+    height: 100vh;
+    background-color: rgba(248, 249, 250, 0.9); /* Semi-transparente */
+    overflow-x: hidden;
+    transition: width 0.3s ease;
+    z-index: 1000;
+    padding-top: 60px; /* Alineado debajo del header */
+    box-shadow: 10px 0 10px -2px rgba(0, 0, 0, 0.5); /* Sombra más intensa */
+}
+
+.sidebar.active {
+    width: 250px; /* Ancho expandido del sidebar */
+}
+
+.sidebar ul {
+    list-style-type: none;
+    padding: 0;
+    margin: 0;
+    padding-top: 25px; 
+}
+
+.sidebar ul li {
+    border-bottom: 1px solid #ab3a3a;
+}
+
+.sidebar ul li a {
+    padding: 15px 20px;
+    display: block;
+    color: #333;
+    text-decoration: none;
+    font-weight: bold;
+    transition: background-color 0.3s ease, color 0.3s ease;
+    background: linear-gradient(to right, rgba(255, 255, 255, 0.8), rgba(230, 230, 230, 0.8));
+}
+
+.sidebar ul li a:hover,
+.sidebar ul li a:focus {
+    background-color: rgba(207, 207, 207, 0.8);
+    color: #212529;
+}
+
+/* Diseño del filtro de precios con un toque más moderno y semi-transparente */
+.price-filter {
+    display: none; /* Oculto inicialmente */
+    padding: 20px;
+    background: rgba(255, 255, 255, 0.95);
+    box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+    border-radius: 8px;
+    border: none;
+}
+
+li:hover .price-filter {
+    display: block; /* Mostrar al pasar el mouse */
+}
+
+.price-filter form {
+    display: grid;
+    gap: 10px;
+}
+
+.price-filter input[type="number"] {
+    padding: 10px;
+    border: 2px solid #ccc;
+    border-radius: 8px;
+    background: #f0f0f0;
+    transition: border-color 0.3s ease;
+}
+
+.price-filter input[type="number"]:hover,
+.price-filter input[type="number"]:focus {
+    border-color: #007bff;
+}
+
+.price-filter button {
+    padding: 10px 20px;
+    background-color: #000000;
+    color: white;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+}
+
+.price-filter button:hover {
+    background-color: #3f3f3f;
+}

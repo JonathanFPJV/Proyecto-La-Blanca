@@ -9,6 +9,8 @@ use App\Models\Categoria;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Storage;
+use App\Services\PriceTree;
+
 
 class ProductoController extends Controller
 {
@@ -19,32 +21,58 @@ class ProductoController extends Controller
         $recomendaciones = Producto::inRandomOrder()->take(4)->get(); // Productos recomendados de manera aleatoria
         return view('home', compact('productos', 'categorias', 'recomendaciones'));
     }
-    
+
     public function index()
     {
         $productos = Producto::with(['logistica.almacen', 'categoria'])->get();
         return view('admin.productos.index', compact('productos'));
     }
+
+    public function filtrarPorPrecio(Request $request)
+    {
+        $categoria = $request->input('categoria');
+        $minPrecio = $request->input('min', 0);
+        $maxPrecio = $request->input('max', 1000);
+
+        // Obtener los productos de la categoría seleccionada
+        $productos = Producto::whereHas('categoria', function ($query) use ($categoria) {
+            $query->where('nombre_categoria', $categoria);
+        })->get();
+
+        // Crear un nuevo árbol binario y llenar con los productos filtrados por categoría
+        $tree = new PriceTree();
+
+        foreach ($productos as $producto) {
+            $tree->insert($producto);
+        }
+
+        // Filtrar los productos utilizando el árbol binario
+        $filteredProducts = $tree->findInRange($minPrecio, $maxPrecio);
+
+        // Retornar la vista con los productos filtrados
+        return view('productos.index', compact('filteredProducts', 'categoria'));
+    }
+
     public function show($id)
     {
         $producto = Producto::findOrFail($id);
         $recomendaciones = Producto::inRandomOrder()->take(4)->get(); // Número de productos que saldrá en las recomendaciones
-    
+
         // Obtener el historial de productos vistos por el usuario desde la sesión
         $historial = session()->get('historial_productos', []);
-    
+
         // Agregar el producto actual al inicio del historial (LIFO)
         array_unshift($historial, $producto->Id_Producto);
-    
+
         // Limitar el historial a los últimos 5 productos
         $historial = array_slice($historial, 0, 5);
-    
+
         // Guardar el historial en la sesión
         session()->put('historial_productos', $historial);
-    
+
         // Obtener los detalles de los productos en el historial
         $productos_historial = Producto::whereIn('Id_Producto', $historial)->get();
-    
+
         return view('producto', compact('producto', 'recomendaciones', 'productos_historial'));
     }
 

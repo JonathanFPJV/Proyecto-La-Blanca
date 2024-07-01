@@ -59,6 +59,7 @@ select:focus {
     font-size: 13px;
     text-transform: uppercase;
     margin-right: 5px;
+    white-space: nowrap; /* Evita que el texto se divida en varias líneas */
 }
 
 .btn-primary {
