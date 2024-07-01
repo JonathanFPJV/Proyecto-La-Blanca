@@ -17,6 +17,7 @@ use App\Http\Middleware\EnsureUserIsAdmin;
 use App\Http\Middleware\EnsureUserIsTrabajador;
 use App\Http\Controllers\ChartController;
 use App\Http\Controllers\ContactController;
+use App\Http\Controllers\PedidoUsuarioController;
 use Illuminate\Support\Facades\Route;
 
 
@@ -48,8 +49,8 @@ Route::post('/favoritos/add/{id}', [FavoritoController::class, 'add'])->name('fa
 Route::delete('/favoritos/remove/{id}', [FavoritoController::class, 'remove'])->name('favoritos.remove');
 
 // Rutas de pedidos
-Route::get('/pedidos', [PedidoController::class, 'indice'])->name('pedidos.index');
-Route::get('/pedidos/{id}', [PedidoController::class, 'show'])->name('pedidos.show');
+
+
 Route::post('/pedidos', [PedidoController::class, 'store'])->name('pedidos.store');
 
 // Rutas de comentarios
@@ -78,6 +79,9 @@ Route::middleware('auth')->group(function () {
     Route::put('/comentarios/{id}', [ComentarioController::class, 'update'])->name('comentarios.update');
     Route::post('/productos/{producto_id}/comentarios', [ComentarioController::class, 'store'])->name('comentarios.store');
     Route::delete('/comentarios/{id}', [ComentarioController::class, 'destroy'])->name('comentarios.destroy');
+
+    Route::get('/pedidos', [PedidoUsuarioController::class, 'index'])->name('pedidos.index');
+    Route::get('/pedidos/{numeroPedido}', [PedidoUsuarioController::class, 'show'])->name('pedidos.detalles');
 });
 
 // Rutas de administración (requieren autenticación)
