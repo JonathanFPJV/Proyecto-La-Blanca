@@ -40,8 +40,6 @@ Route::get('/medias', [ProductoController::class, 'medias'])->name('medias');
 
 
 
-Route::get('/checkout', [CarritoController::class, 'checkout'])->name('checkout');
-Route::post('/checkout', [CarritoController::class, 'processCheckout'])->name('processCheckout');
 
 // Rutas de pedidos
 Route::post('/pedidos', [PedidoController::class, 'store'])->name('pedidos.store');
@@ -82,7 +80,6 @@ Route::middleware('auth')->group(function () {
     Route::get('/carrito/remove/{id_orden}', [CarritoController::class, 'removeCarrito'])->name('carrito.remove');
     Route::post('/carrito/update', [CarritoController::class, 'updateCarrito'])->name('carrito.update');
     Route::post('/carrito/generar-pedido', [CarritoController::class, 'generarPedido'])->name('carrito.generarPedido');
-
 });
 
 // Rutas de administración (requieren autenticación)

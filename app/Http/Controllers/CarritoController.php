@@ -17,7 +17,6 @@ class CarritoController extends Controller
     public function index()
     {
         // Obtener los datos de compras, logistica y productos
-        // Obtener los datos de compras, logistica y productos
         $compras = Compra::where('Estado', 'NP')
             ->with(['logistica' => function($query) {
                 $query->with('producto');
@@ -105,11 +104,7 @@ class CarritoController extends Controller
     
     public function generarPedido(Request $request)
     {
-        // Validar que se hayan seleccionado órdenes
-        $request->validate([
-            'ordenes_seleccionadas' => 'required|array|min:1',
-        ]);
-
+        
         // Obtener el usuario autenticado
         $usuario = Auth::user();
 
@@ -117,51 +112,20 @@ class CarritoController extends Controller
         $n_pedido = 'PED' . $usuario->id . Carbon::now()->format('YmdHis');
         $n_envio = 'ENV' . $usuario->id . Carbon::now()->format('YmdHis');
 
-        // Actualizar las órdenes seleccionadas
-        $ordenesSeleccionadas = $request->input('ordenes_seleccionadas');
-        foreach ($ordenesSeleccionadas as $id_orden) {
-            $compra = Compra::find($id_orden);
-            if ($compra) {
-                $compra->id_pedido = $n_pedido;
-                $compra->id_envio = $n_envio;
-                $compra->Estado = 'Enviado';
-                $compra->save();
-            }
-        }
+        // Obtener la orden seleccionada
+        $idOrdenSeleccionada = $request->input('id_orden');
+
+        // Actualizar la orden seleccionada
+        Compra::where('id_orden', $idOrdenSeleccionada)
+            ->update([
+                'id_pedido' => $n_pedido,
+                'id_envio' => $n_envio,
+                'Estado' => 'P',
+            ]);
 
         // Redirigir con un mensaje de éxito
-        return redirect()->route('carrito.index')->with('success', 'Pedido generado y órdenes actualizadas correctamente.');
-    }
-    
-    public function checkout()
-    {
-        $carrito = session()->get('carrito');
-        return view('checkout', compact('carrito'));
-    }
-
-    public function processCheckout(Request $request)
-    {
-        $pedido = new Pedido();
-        $pedido->user_id = auth()->id();
-        $pedido->Estado = 'Pendiente';
-        $pedido->Fecha_pedido = now();
-        $pedido->Monto_total = $request->total;
-        $pedido->save();
-
-        foreach (session('carrito') as $id => $detalles) {
-            $producto = Producto::find($id);
-            $pedido->productos()->attach($producto, ['cantidad' => $detalles['cantidad'], 'precio' => $detalles['precio']]);
-            $producto->stock -= $detalles['cantidad'];
-            $producto->save();
-        }
-
-        session()->forget('carrito');
-
-        // Generar boleta en PDF
-        $pdf = Pdf::loadView('boleta', compact('pedido'));
-        return $pdf->download('boleta.pdf');
-
-        return redirect()->route('pedidos')->with('success', 'Compra realizada con éxito');
+        return redirect()->route('carrito.index')->with('success', 'Pedido generado y orden actualizada correctamente.');
     }
 }
+
 
