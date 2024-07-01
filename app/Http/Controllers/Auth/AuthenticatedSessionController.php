@@ -25,6 +25,7 @@ class AuthenticatedSessionController extends Controller
      */
     public function store(LoginRequest $request): RedirectResponse
     {
+        // Validar el request
         $request->validate([
             'email' => ['required', 'email'],
             'password' => ['required'],
@@ -32,13 +33,25 @@ class AuthenticatedSessionController extends Controller
 
         if (!Auth::attempt($request->only('email', 'password'), $request->filled('remember'))) {
             throw ValidationException::withMessages([
-                'error' => 'Las credenciales no coinciden con nuestros registros.'
+                'error' => 'Usuario o contraseña incorrecta.'
+            ]);
+        }
+        $user = Auth::user();
+        if ($user->estado !== 'activo') {
+            Auth::logout();
+            throw ValidationException::withMessages([
+                'error' => 'La cuenta ha sido eliminada.',
             ]);
         }
 
+        // Autenticar al usuario
+        $request->authenticate();
+
+        // Regenerar la sesión
         $request->session()->regenerate();
 
-        $user = Auth::user();
+        // Verificar el tipo de usuario y redirigir
+        
         if ($user->ID_Tipo == 1) {
             return redirect()->intended(route('admin.dashboard', absolute: false));
         } elseif ($user->ID_Tipo == 2) {

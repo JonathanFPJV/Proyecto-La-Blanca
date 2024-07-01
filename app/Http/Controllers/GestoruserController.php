@@ -130,7 +130,7 @@ class GestoruserController extends Controller
     public function destroy($id)
     {
         $user = User::findOrFail($id);
-        $user->delete();
+        $user->update(['estado' => 'inactivo']);
 
         return redirect()->route('admin.gestorUsers.index')->with('success', 'Usuario eliminado con éxito.');
     }

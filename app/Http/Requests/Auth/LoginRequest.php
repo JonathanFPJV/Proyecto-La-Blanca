@@ -8,6 +8,7 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\RateLimiter;
 use Illuminate\Support\Str;
 use Illuminate\Validation\ValidationException;
+use Illuminate\Support\Facades\Log; // Importar el facade Log
 
 class LoginRequest extends FormRequest
 {
@@ -41,16 +42,20 @@ class LoginRequest extends FormRequest
     {
         $this->ensureIsNotRateLimited();
 
-        if (! Auth::attempt($this->only('email', 'password'), $this->boolean('remember'))) {
-            Auth::logoutOtherDevices($this->password); // Ensure the user is logged out from other devices
+        if (!Auth::attempt($this->only('email', 'password'), $this->boolean('remember'))) {
             $this->throwFailedAuthenticationException();
         }
 
         $user = Auth::user();
+        \Log::info('User estado from database: ' . $user->estado); // Línea de log para depurar
+
         if ($user->estado !== 'activo') {
+            \Log::info('User is inactive, logging out');
             Auth::logout();
             $this->throwFailedAuthenticationException();
         }
+
+        Auth::logoutOtherDevices($this->password);
 
         RateLimiter::clear($this->throttleKey());
     }
