@@ -4,35 +4,74 @@ namespace App\Http\Controllers;
 
 use App\Models\Producto;
 use App\Models\Pedido;
+use App\Models\Compra;
+use App\Models\Logistica;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Barryvdh\DomPDF\Facade\Pdf;
+use Illuminate\Support\Facades\Auth;
+use App\Models\Almacen;
 
 class CarritoController extends Controller
 {
     public function index()
     {
-        $carrito = session()->get('carrito', []);
-        return view('carrito.index', compact('carrito'));
+        // Obtener los datos de compras, logistica y productos
+        // Obtener los datos de compras, logistica y productos
+        $compras = Compra::where('Estado', 'NP')
+            ->with(['logistica' => function($query) {
+                $query->with('producto');
+            }])
+            ->get();
+
+        return view('carrito.index', compact('compras'));
     }
 
-    public function add(Request $request, $id)
+    public function addCarrito(Request $request)
     {
-        $producto = Producto::findOrFail($id);
-        $carrito = session()->get('carrito', []);
+        // Validar los datos de entrada
+        $validated = $request->validate([
+            'id_producto' => 'required|exists:productos,Id_Producto',
+            'quantity' => 'required|integer|min:1',
+        ]);
 
-        if (isset($carrito[$id])) {
-            $carrito[$id]['cantidad']++;
-        } else {
-            $carrito[$id] = [
-                "nombre" => $producto->Nombre_producto,
-                "cantidad" => 1,
-                "precio" => $producto->Precio,
-                "imagen" => $producto->imagen
-            ];
+        // Obtener el usuario autenticado
+        $usuario = Auth::user();
+
+        // Generar el número de orden
+        $n_orden = 'ORD' . $usuario->id . Carbon::now()->format('YmdHis');
+
+        // Obtener el producto y verificar stock en los almacenes
+        $idProducto = $request->input('id_producto');
+        $quantity = $request->input('quantity');
+
+        // Obtener el registro de logistica con mayor stock del producto
+        $logistica = Logistica::where('Id_Producto', $idProducto)
+                              ->orderBy('stock', 'desc')
+                              ->first();
+
+        if (!$logistica || $logistica->stock < $quantity) {
+            return redirect()->back()->with('error', 'No hay suficiente stock disponible en los almacenes.');
         }
 
-        session()->put('carrito', $carrito);
-        return redirect()->back()->with('success', 'Producto añadido al carrito');
+        // Obtener el almacén correspondiente
+        $almacen = Almacen::find($logistica->Id_Almacen);
+
+        // Crear el registro en la tabla logistica
+        Logistica::create([
+            'Id_usuario' => $usuario->id,
+            'Id_Producto' => $idProducto,
+            'n_orden' => $n_orden,
+            'Cantidad' => $quantity,
+            'Id_Almacen' => $almacen->Id_Almacen,
+        ]);
+
+        // Actualizar el stock en logistica
+        $logistica->stock -= $quantity;
+        $logistica->save();
+
+        // Redirigir con un mensaje de éxito
+        return redirect()->back()->with('success', 'Producto añadido al carrito con éxito.');
     }
 
     public function remove($id)

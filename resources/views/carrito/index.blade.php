@@ -1,36 +1,31 @@
+<!-- resources/views/carrito/index.blade.php -->
+
 @extends('layouts.app')
 
 @section('content')
-<div class="container-fluid p-0">
-    <img src="{{ asset('images/carrito.png') }}" class="img-fluid w-100" alt="Carrito Banner">
-</div>
-<div class="container mt-5">
-    <h1>Tu Carrito</h1>
-    @if(empty($carrito))
-        <p>Tu carrito está vacío.</p>
-    @else
-        <ul class="list-group">
-            @foreach($carrito as $id => $detalle)
-                <li class="list-group-item">
-                    <div class="d-flex justify-content-between align-items-center">
-                        <div class="d-flex align-items-center">
-                            <img src="{{ asset('storage/' . $detalle['imagen']) }}" alt="{{ $detalle['nombre'] }}" class="img-thumbnail mr-3" style="width: 100px; height: auto;">
-                            <div>
-                                <div>{{ $detalle['nombre'] }} - S/.{{ $detalle['precio'] }} (Cantidad: {{ $detalle['cantidad'] }})</div>
+    <div class="container">
+        <h1>Carrito de Compras</h1>
+        @foreach($compras as $compra)
+            <div class="card mb-3">
+                <div class="card-body">
+                    <h5 class="card-title">Orden: {{ $compra->id_orden }}</h5>
+                    <p class="card-text">Estado: {{ $compra->Estado }}</p>
+                    @foreach($compra->logistica as $logistica)
+                        <div class="row">
+                            <div class="col-md-4">
+                                <img src="{{ asset('storage/' . $logistica->producto->imagen) }}" alt="{{ $logistica->producto->Nombre_producto }}" width="100" height="100">
+                            </div>
+                            <div class="col-md-8">
+                                <h5>{{ $logistica->producto->Nombre_producto }}</h5>
+                                <p>Descripción: {{ $logistica->producto->Descripcion }}</p>
+                                <p>Precio: S/.{{ $logistica->producto->Precio }}</p>
+                                <p>Cantidad: {{ $logistica->Cantidad }}</p>
                             </div>
                         </div>
-                        <div>
-                            <form action="{{ route('carrito.remove', $id) }}" method="POST">
-                                @csrf
-                                @method('DELETE')
-                                <button type="submit" class="btn btn-danger btn-sm">Eliminar</button>
-                            </form>
-                        </div>
-                    </div>
-                </li>
-            @endforeach
-        </ul>
-        <a href="{{ route('checkout') }}" class="btn btn-success mt-3">Realizar Compra</a>
-    @endif
-</div>
+                    @endforeach
+                </div>
+            </div>
+        @endforeach
+    </div>
 @endsection
+

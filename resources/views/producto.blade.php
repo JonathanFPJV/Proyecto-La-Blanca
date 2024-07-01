@@ -65,8 +65,9 @@
                     <label for="quantity">Cantidad</label>
                     <input type="number" name="quantity" id="quantity" class="form-control quantity-input" value="1" min="1">
                 </div>
-                <form action="{{ route('carrito.add', $producto->Id_Producto) }}" method="POST" class="mt-4">
+                <form action="{{ route('carrito.add') }}" method="POST" class="mt-4">
                     @csrf
+                    <input type="hidden" name="id_producto" value="{{ $producto->Id_Producto }}">
                     <input type="hidden" name="quantity" id="hidden-quantity" value="1">
                     <button type="submit" class="w-full border border-border bg-card text-card-foreground py-2">Añadir al carrito</button>
                 </form>

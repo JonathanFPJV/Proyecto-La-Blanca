@@ -29,4 +29,9 @@ class Compra extends Model
     {
         return $this->belongsTo(Envio::class, 'id_envio');
     }
+    
+    public function logistica()
+    {
+        return $this->hasMany(Logistica::class, 'n_orden', 'id_orden');
+    }
 }

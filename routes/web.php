@@ -37,8 +37,8 @@ Route::get('/zapatillas', [ProductoController::class, 'zapatillas'])->name('zapa
 Route::get('/medias', [ProductoController::class, 'medias'])->name('medias');
 
 // Rutas para el carrito de compras
-Route::get('/carrito', [CarritoController::class, 'index'])->name('carrito.index');
-Route::post('/carrito/add/{id}', [CarritoController::class, 'add'])->name('carrito.add');
+
+
 Route::delete('/carrito/remove/{id}', [CarritoController::class, 'remove'])->name('carrito.remove');
 Route::get('/checkout', [CarritoController::class, 'checkout'])->name('checkout');
 Route::post('/checkout', [CarritoController::class, 'processCheckout'])->name('processCheckout');
@@ -72,9 +72,13 @@ Route::middleware('auth')->group(function () {
     Route::put('/comentarios/{id}', [ComentarioController::class, 'update'])->name('comentarios.update');
     Route::post('/productos/{producto_id}/comentarios', [ComentarioController::class, 'store'])->name('comentarios.store');
     Route::delete('/comentarios/{id}', [ComentarioController::class, 'destroy'])->name('comentarios.destroy');
-
+    // Rutas de pedidos
     Route::get('/pedidos', [PedidoUsuarioController::class, 'index'])->name('pedidos.index');
     Route::get('/pedidos/{numeroPedido}', [PedidoUsuarioController::class, 'show'])->name('pedidos.detalles');
+
+    // Rutas de carrito
+    Route::post('/carrito/add', [CarritoController::class, 'addCarrito'])->name('carrito.add');
+    Route::get('/carrito', [CarritoController::class, 'index'])->name('carrito.index');
 });
 
 // Rutas de administración (requieren autenticación)
