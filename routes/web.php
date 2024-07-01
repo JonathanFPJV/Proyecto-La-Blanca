@@ -59,11 +59,8 @@ Route::get('/boletas/{id}', [BoletaController::class, 'show'])->name('boletas.sh
 // Rutas del pie de página
 Route::get('/contactanos', [PaginaController::class, 'contactanos'])->name('contactanos');
 Route::post('/contact/send', [ContactController::class, 'send'])->name('contact.send');
-Route::get('/preguntas-frecuentes', [PaginaController::class, 'preguntasFrecuentes'])->name('preguntasFrecuentes');
 Route::get('/ofertas-promociones', [PaginaController::class, 'ofertasPromociones'])->name('ofertasPromociones');
-Route::get('/guia-tallas', [PaginaController::class, 'guiaTallas'])->name('guiaTallas');
 Route::get('/nuestra-historia', [PaginaController::class, 'nuestraHistoria'])->name('nuestraHistoria');
-Route::get('/telas-materiales', [PaginaController::class, 'telasMateriales'])->name('telasMateriales');
 
 // Rutas de administración (requieren autenticación)
 Route::middleware('auth')->group(function () {

@@ -168,15 +168,17 @@ body, h1, h2, h3, p, ul, ol, li, input, button, a {
     border: 1px solid #ddd;
     border-radius: 8px;
     overflow: hidden;
-    background-color: #fff;
+    background-color: #f5f5dc; /* Beige */
     text-align: center;
     transition: transform 0.3s ease-in-out;
     cursor: pointer;
+    color: #000; /* Letras negras */
 }
 
 .product-card img {
     width: 100%;
-    height: auto;
+    height: 320px; /* Ajusta la altura según tus necesidades */
+    object-fit: cover;
     transition: opacity 0.3s ease-in-out;
 }
 
@@ -192,11 +194,13 @@ body, h1, h2, h3, p, ul, ol, li, input, button, a {
 .card-title {
     margin-bottom: 10px;
     font-size: 1.2rem;
+    font-family: 'Arial Black', Arial, sans-serif; /* Fuente similar a la imagen */
+    letter-spacing: 0.1em; /* Espaciado de letras */
 }
 
 .card-text {
     font-size: 0.9rem;
-    color: #666;
+    color: #000; /* Letras negras */
 }
 
 .card-text strong {
@@ -204,6 +208,7 @@ body, h1, h2, h3, p, ul, ol, li, input, button, a {
     font-weight: bold;
     color: #333;
 }
+
 /* Estilos para el carrusel */
 .carousel-inner img {
     height: auto;
@@ -371,3 +376,80 @@ body, h1, h2, h3, p, ul, ol, li, input, button, a {
     100% { transform: translateX(-100%); }
 }
 
+/* Estilos específicos para la vista Nuestra Historia */
+.nuestra-historia .highlight-text {
+    text-align: center; /* Centra el texto */
+    font-family: 'Arial Black', Arial, sans-serif; /* Fuente similar a la de la imagen */
+    font-size: 3rem; /* Tamaño grande */
+    color: #000; /* Color del texto */
+    letter-spacing: 0.1em; /* Espaciado entre letras */
+    font-weight: bold; /* Negrita */
+    text-transform: uppercase; /* Texto en mayúsculas */
+    margin-bottom: 40px;
+    transition: color 0.3s ease;
+}
+
+.nuestra-historia h2, .nuestra-historia p {
+    font-family: Arial, Helvetica, sans-serif; /* Fuente general para el resto del contenido */
+    color: #333; /* Ajusta el color del texto si es necesario */
+}
+
+.nuestra-historia p {
+    text-align: justify; /* Justificar los párrafos */
+}
+
+.nuestra-historia .container {
+    padding: 20px;
+}
+
+.nuestra-historia h2 {
+    font-size: 1.5rem;
+    margin-bottom: 20px;
+}
+
+.nuestra-historia p {
+    font-size: 16px;
+    line-height: 1.6;
+}
+
+/* Estilos para el botón */
+.nuestra-historia .btn-dark {
+    background-color: #000;
+    border-color: #000;
+    color: #fff;
+}
+
+.nuestra-historia .btn-dark:hover {
+    background-color: #333;
+    border-color: #333;
+    color: #fff;
+}
+
+/* Estilos para la imagen de pantalla completa y el botón */
+.container-fluid {
+    position: relative;
+}
+
+.container-fluid .btn-container {
+    position: absolute;
+    bottom: 20px; /* Ajusta este valor para mover el botón hacia arriba o hacia abajo */
+    width: 100%;
+    display: flex;
+    justify-content: center;
+}
+
+.container-fluid .btn-dark {
+    background-color: #000;
+    border-color: #000;
+    color: #fff;
+    padding: 10px 20px;
+    font-size: 1.2rem;
+    font-weight: bold;
+    text-transform: uppercase;
+    transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+.container-fluid .btn-dark:hover {
+    background-color: #333;
+    color: #fff;
+}
