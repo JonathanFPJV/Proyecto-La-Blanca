@@ -69,7 +69,6 @@
                     @csrf
                     <input type="hidden" name="quantity" id="hidden-quantity" value="1">
                     <button type="submit" class="w-full border border-border bg-card text-card-foreground py-2">Añadir al carrito</button>
-                    <button type="submit" formaction="{{ route('favoritos.add', $producto->Id_Producto) }}" class="mt-2 w-full bg-primary text-primary-foreground py-2"><i class="fas fa-heart"></i></button>
                 </form>
             </div>
         </div>

@@ -19,7 +19,6 @@
         </div>
         <i class="fas fa-search search-icon"></i>
         <i class="fas fa-user user-icon"></i>
-        <i class="fas fa-heart" onclick="location.href='{{ route('favoritos.index') }}'"></i>
         <i class="fas fa-shopping-cart cart-icon" onclick="location.href='{{ route('carrito.index') }}'"><span class="cart-count">{{ session('carrito') ? count(session('carrito')) : 0 }}</span></i>
         <div class="user-menu">
             <div class="dropdown-menu">

@@ -43,14 +43,7 @@ Route::delete('/carrito/remove/{id}', [CarritoController::class, 'remove'])->nam
 Route::get('/checkout', [CarritoController::class, 'checkout'])->name('checkout');
 Route::post('/checkout', [CarritoController::class, 'processCheckout'])->name('processCheckout');
 
-// Rutas para favoritos
-Route::get('/favoritos', [FavoritoController::class, 'index'])->name('favoritos.index');
-Route::post('/favoritos/add/{id}', [FavoritoController::class, 'add'])->name('favoritos.add');
-Route::delete('/favoritos/remove/{id}', [FavoritoController::class, 'remove'])->name('favoritos.remove');
-
 // Rutas de pedidos
-
-
 Route::post('/pedidos', [PedidoController::class, 'store'])->name('pedidos.store');
 
 // Rutas de comentarios

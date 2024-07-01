@@ -1,6 +1,9 @@
 @extends('layouts.app')
 
 @section('content')
+<div class="w-100">
+        <img src="{{ asset('images/perfil.png') }}" class="img-fluid" alt="Full Width Image">
+        </div>
     <div class="container">
         <h1>Editar Perfil</h1>
         @if(session('status') === 'profile-updated')
@@ -53,19 +56,19 @@
                     <div class="text-danger">{{ $message }}</div>
                 @enderror
             </div>
-            <button type="submit" class="btn btn-primary">Update Profile</button>
+            <button type="submit" class="btn btn-primary">Actualizar Perfil</button>
         </form>
         <form action="{{ route('profile.destroy') }}" method="POST" class="mt-4">
             @csrf
             @method('DELETE')
             <div class="mb-3">
-                <label for="password" class="form-label">Current Password</label>
+                <label for="password" class="form-label">Escribe tu contraseña si deseas eliminar tu cuenta :(</label>
                 <input type="password" name="password" class="form-control" id="password">
                 @error('password', 'userDeletion')
                     <div class="text-danger">{{ $message }}</div>
                 @enderror
             </div>
-            <button type="submit" class="btn btn-danger">Delete Account</button>
+            <button type="submit" class="btn btn-danger">Eliminar Cuenta</button>
         </form>
     </div>
 @endsection
