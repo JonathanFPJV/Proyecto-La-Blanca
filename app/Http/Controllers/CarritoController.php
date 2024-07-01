@@ -74,16 +74,65 @@ class CarritoController extends Controller
         return redirect()->back()->with('success', 'Producto añadido al carrito con éxito.');
     }
 
-    public function remove($id)
+    public function removeCarrito($id_orden)
     {
-        $carrito = session()->get('carrito', []);
-        if (isset($carrito[$id])) {
-            unset($carrito[$id]);
-            session()->put('carrito', $carrito);
+        // Obtener las compras y logistica relacionadas
+        $compra = Compra::where('id_orden', $id_orden)->first();
+        if ($compra) {
+            Logistica::where('n_orden', $id_orden)->delete();
+            $compra->delete();
         }
-        return redirect()->back()->with('success', 'Producto eliminado del carrito');
+
+        return redirect()->route('carrito.index')->with('success', 'Compra eliminada del carrito.');
     }
 
+    public function updateCarrito(Request $request)
+    {
+        $validated = $request->validate([
+            'id_logistica' => 'required|exists:logisticas,Id_Logistica',
+            'quantity' => 'required|integer|min:1',
+        ]);
+
+        $logistica = Logistica::find($validated['id_logistica']);
+        if ($logistica) {
+            // Actualizar la cantidad en logistica
+            $logistica->Cantidad = $validated['quantity'];
+            $logistica->save();
+        }
+
+        return redirect()->route('carrito.index')->with('success', 'Cantidad actualizada con éxito.');
+    }
+    
+    public function generarPedido(Request $request)
+    {
+        // Validar que se hayan seleccionado órdenes
+        $request->validate([
+            'ordenes_seleccionadas' => 'required|array|min:1',
+        ]);
+
+        // Obtener el usuario autenticado
+        $usuario = Auth::user();
+
+        // Generar números de pedido y envío
+        $n_pedido = 'PED' . $usuario->id . Carbon::now()->format('YmdHis');
+        $n_envio = 'ENV' . $usuario->id . Carbon::now()->format('YmdHis');
+
+        // Actualizar las órdenes seleccionadas
+        $ordenesSeleccionadas = $request->input('ordenes_seleccionadas');
+        foreach ($ordenesSeleccionadas as $id_orden) {
+            $compra = Compra::find($id_orden);
+            if ($compra) {
+                $compra->id_pedido = $n_pedido;
+                $compra->id_envio = $n_envio;
+                $compra->Estado = 'Enviado';
+                $compra->save();
+            }
+        }
+
+        // Redirigir con un mensaje de éxito
+        return redirect()->route('carrito.index')->with('success', 'Pedido generado y órdenes actualizadas correctamente.');
+    }
+    
     public function checkout()
     {
         $carrito = session()->get('carrito');

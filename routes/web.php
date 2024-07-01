@@ -39,7 +39,7 @@ Route::get('/medias', [ProductoController::class, 'medias'])->name('medias');
 // Rutas para el carrito de compras
 
 
-Route::delete('/carrito/remove/{id}', [CarritoController::class, 'remove'])->name('carrito.remove');
+
 Route::get('/checkout', [CarritoController::class, 'checkout'])->name('checkout');
 Route::post('/checkout', [CarritoController::class, 'processCheckout'])->name('processCheckout');
 
@@ -79,6 +79,10 @@ Route::middleware('auth')->group(function () {
     // Rutas de carrito
     Route::post('/carrito/add', [CarritoController::class, 'addCarrito'])->name('carrito.add');
     Route::get('/carrito', [CarritoController::class, 'index'])->name('carrito.index');
+    Route::get('/carrito/remove/{id_orden}', [CarritoController::class, 'removeCarrito'])->name('carrito.remove');
+    Route::post('/carrito/update', [CarritoController::class, 'updateCarrito'])->name('carrito.update');
+    Route::post('/carrito/generar-pedido', [CarritoController::class, 'generarPedido'])->name('carrito.generarPedido');
+
 });
 
 // Rutas de administración (requieren autenticación)
