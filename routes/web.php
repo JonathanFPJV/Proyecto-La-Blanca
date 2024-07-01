@@ -16,6 +16,7 @@ use App\Http\Controllers\LogisticaController;
 use App\Http\Middleware\EnsureUserIsAdmin;
 use App\Http\Middleware\EnsureUserIsTrabajador;
 use App\Http\Controllers\ChartController;
+use App\Http\Controllers\ContactController;
 use Illuminate\Support\Facades\Route;
 
 // Rutas de productos y categorías
@@ -49,10 +50,7 @@ Route::post('/pedidos', [PedidoController::class, 'store'])->name('pedidos.store
 
 // Rutas de comentarios
 Route::get('/comentarios', [ComentarioController::class, 'index'])->name('comentarios.index');
-Route::post('/comentarios', [ComentarioController::class, 'store'])->name('comentarios.store');
-Route::get('/comentarios/{id}/edit', [ComentarioController::class, 'edit'])->name('comentarios.edit');
-Route::patch('/comentarios/{id}', [ComentarioController::class, 'update'])->name('comentarios.update');
-Route::delete('/comentarios/{id}', [ComentarioController::class, 'destroy'])->name('comentarios.destroy');
+
 
 // Rutas de boletas
 Route::get('/boletas', [BoletaController::class, 'index'])->name('boletas.index');
@@ -60,6 +58,7 @@ Route::get('/boletas/{id}', [BoletaController::class, 'show'])->name('boletas.sh
 
 // Rutas del pie de página
 Route::get('/contactanos', [PaginaController::class, 'contactanos'])->name('contactanos');
+Route::post('/contact/send', [ContactController::class, 'send'])->name('contact.send');
 Route::get('/preguntas-frecuentes', [PaginaController::class, 'preguntasFrecuentes'])->name('preguntasFrecuentes');
 Route::get('/ofertas-promociones', [PaginaController::class, 'ofertasPromociones'])->name('ofertasPromociones');
 Route::get('/guia-tallas', [PaginaController::class, 'guiaTallas'])->name('guiaTallas');
@@ -73,6 +72,11 @@ Route::middleware('auth')->group(function () {
     Route::get('/profile/edit', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::put('/profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
+    // Rutas de comentarios
+    Route::get('/comentarios/{id}/edit', [ComentarioController::class, 'edit'])->name('comentarios.edit');
+    Route::put('/comentarios/{id}', [ComentarioController::class, 'update'])->name('comentarios.update');
+    Route::post('/productos/{producto_id}/comentarios', [ComentarioController::class, 'store'])->name('comentarios.store');
+    Route::delete('/comentarios/{id}', [ComentarioController::class, 'destroy'])->name('comentarios.destroy');
 });
 
 // Rutas de administración (requieren autenticación)
