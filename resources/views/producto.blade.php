@@ -50,10 +50,11 @@
             <div class="p-4 bg-card text-card-foreground">
                 <h1 class="text-xl font-bold">{{ $producto->Nombre_producto }}</h1>
                 <p class="text-2xl font-semibold mt-2">S/.{{ $producto->Precio }}</p>
-                <p class="text-muted-foreground text-sm mt-1">Las gastos de envío se calculan en la pantalla de pagos.</p>
+                <p class="text-muted-foreground text-sm mt-1">{{ $producto->Descripcion }}</p>
+                <p class="text-muted-foreground text-sm mt-1">Stock: {{ $producto->Stock }}</p> <!-- Stock del producto -->
                 <hr class="my-4 border-border" />
                 <div class="mt-4">
-                    <h2 class="text-lg font-semibold">TALLA</h2>
+                    <h1 class="text-md font-semibold">Talla</h1> <!-- Cambié el tamaño de la palabra TALLA -->
                     <div class="flex space-x-2 mt-2">
                         @foreach(explode(',', $producto->Talla) as $talla)
                             <button class="border border-border p-2 w-10 h-10 flex items-center justify-center">{{ trim($talla) }}</button>
@@ -62,26 +63,15 @@
                 </div>
                 <div class="mt-4">
                     <label for="quantity">Cantidad</label>
-                    <div class="input-group">
-                        <div class="input-group-prepend">
-                            <button type="button" class="btn btn-outline-secondary" id="decrement-btn">-</button>
-                        </div>
-                        <input type="number" name="quantity" id="quantity" class="form-control" value="1" min="1">
-                        <div class="input-group-append">
-                            <button type="button" class="btn btn-outline-secondary" id="increment-btn">+</button>
-                        </div>
-                    </div>
+                    <input type="number" name="quantity" id="quantity" class="form-control quantity-input" value="1" min="1">
                 </div>
-                <div class="flex items-center mt-4">
-                    <img aria-hidden="true" alt="secure-shipping" src="https://openui.fly.dev/openui/24x24.svg?text=🔒" />
-                    <p class="ml-2 text-muted-foreground">ENVIOS A TODO EL PERU</p>
-                </div>
+                <form action="{{ route('carrito.add', $producto->Id_Producto) }}" method="POST" class="mt-4">
+                    @csrf
+                    <input type="hidden" name="quantity" id="hidden-quantity" value="1">
+                    <button type="submit" class="w-full border border-border bg-card text-card-foreground py-2">Añadir al carrito</button>
+                    <button type="submit" formaction="{{ route('favoritos.add', $producto->Id_Producto) }}" class="mt-2 w-full bg-primary text-primary-foreground py-2"><i class="fas fa-heart"></i></button>
+                </form>
             </div>
-            <form action="{{ route('carrito.add', $producto->Id_Producto) }}" method="POST" class="mt-4">
-                @csrf
-                <button type="submit" class="mt-4 w-full border border-border bg-card text-card-foreground py-2">AGREGAR AL CARRITO</button>
-                <button type="submit" formaction="{{ route('favoritos.add', $producto->Id_Producto) }}" class="mt-2 w-full bg-primary text-primary-foreground py-2"><i class="fas fa-heart"></i></button>
-            </form>
         </div>
     </div>
 
@@ -192,22 +182,16 @@
 
 @section('styles')
     <link rel="stylesheet" href="{{ asset('css/producto.css') }}">
+    <style>
+        .quantity-input {
+            max-width: 60px;
+            text-align: center;
+        }
+    </style>
 @endsection
 
 @section('scripts')
 <script>
-    document.getElementById('decrement-btn').addEventListener('click', function() {
-        var quantity = document.getElementById('quantity');
-        if (quantity.value > 1) {
-            quantity.value--;
-        }
-    });
-
-    document.getElementById('increment-btn').addEventListener('click', function() {
-        var quantity = document.getElementById('quantity');
-        quantity.value++;
-    });
-
     document.addEventListener('DOMContentLoaded', function() {
         const productCards = document.querySelectorAll('.product-card');
 
@@ -235,6 +219,13 @@
                 card.style.transform = 'scale(1)';
                 card.style.boxShadow = 'none';
             });
+        });
+
+        const quantityInput = document.getElementById('quantity');
+        const hiddenQuantityInput = document.getElementById('hidden-quantity');
+        
+        quantityInput.addEventListener('change', function() {
+            hiddenQuantityInput.value = quantityInput.value;
         });
     });
 </script>
